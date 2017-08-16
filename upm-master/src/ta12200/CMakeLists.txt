@@ -1,5 +1,0 @@
-set (libname "ta12200")
-set (libdescription "AC Current Sensor")
-set (module_src ${libname}.cxx)
-set (module_hpp ${libname}.hpp)
-upm_module_init(mraa)

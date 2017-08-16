@@ -1,5 +1,0 @@
-set (libname "xbee")
-set (libdescription "XBee Serial Module")
-set (module_src ${libname}.cxx)
-set (module_hpp ${libname}.hpp)
-upm_module_init(mraa)

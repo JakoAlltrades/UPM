@@ -1,5 +1,0 @@
-set (libname "ds1808lc")
-set (libdescription "Lighting Controller")
-set (module_src ${libname}.cxx mraa-utils.cxx)
-set (module_hpp ${libname}.hpp)
-upm_module_init(interfaces mraa)

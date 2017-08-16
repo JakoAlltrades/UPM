@@ -1,5 +1,0 @@
-set (libname "hdc1000")
-set (libdescription "Humidity/Temperature Sensor")
-set (module_src ${libname}.cpp)
-set (module_hpp ${libname}.hpp)
-upm_module_init(mraa)

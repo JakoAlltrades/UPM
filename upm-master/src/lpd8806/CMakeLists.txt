@@ -1,5 +1,0 @@
-set (libname "lpd8806")
-set (libdescription "Digital RGB LED Strip Controller")
-set (module_src ${libname}.cxx)
-set (module_hpp ${libname}.hpp)
-upm_module_init(mraa)

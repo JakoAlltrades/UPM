@@ -1,5 +1,0 @@
-set (libname "adafruitss")
-set (libdescription "Adafruit Servo Shield")
-set (module_src ${libname}.cxx)
-set (module_hpp ${libname}.hpp)
-upm_module_init(mraa)

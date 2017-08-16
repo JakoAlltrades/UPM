@@ -1,5 +1,0 @@
-set (libname "nlgpio16")
-set (libdescription "16-channel USB GPIO Module")
-set (module_src ${libname}.cxx)
-set (module_hpp ${libname}.hpp)
-upm_module_init(mraa)

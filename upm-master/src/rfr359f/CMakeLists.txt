@@ -1,5 +1,0 @@
-set (libname "rfr359f")
-set (libdescription "Infrared Distance Interrupter")
-set (module_src ${libname}.cxx)
-set (module_hpp ${libname}.hpp)
-upm_module_init(mraa)
