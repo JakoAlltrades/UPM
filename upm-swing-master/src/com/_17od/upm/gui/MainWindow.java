@@ -309,7 +309,7 @@ public class MainWindow extends JFrame implements ActionListener {
 			public void changedUpdate(DocumentEvent e) {
 				// This method never seems to be called
 			}
-
+			
 			public void insertUpdate(DocumentEvent e) {
 				dbActions.filter();
 			}
