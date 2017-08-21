@@ -18,7 +18,7 @@
  * along with Universal Password Manager; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com._17od.upm.gui;
+package com._17od.upm.gui.JavaFX;
 
 import java.awt.Component;
 import java.awt.Dimension;

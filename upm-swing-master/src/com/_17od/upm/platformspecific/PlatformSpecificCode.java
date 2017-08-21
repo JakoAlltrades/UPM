@@ -25,7 +25,7 @@ import com._17od.upm.gui.MainWindow;
 
 public abstract class PlatformSpecificCode {
 
-    public abstract void initialiseApplication(final MainWindow mainWindow);
+    public abstract void initialiseApplication(final com._17od.upm.gui.JavaFX.MainWindow mainWindow);
 
 
     public static PlatformSpecificCode getInstance() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
