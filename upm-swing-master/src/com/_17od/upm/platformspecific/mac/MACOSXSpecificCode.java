@@ -51,4 +51,27 @@ public class MACOSXSpecificCode extends PlatformSpecificCode {
         });
     }
 
+	public void initialiseApplication(final com._17od.upm.gui.JavaFX.MainWindow mainWindow) {
+		// TODO Auto-generated method stub
+		Application fApplication = Application.getApplication();
+        fApplication.setEnabledPreferencesMenu(true);
+        fApplication.setEnabledAboutMenu(true);
+        fApplication.addApplicationListener(new ApplicationAdapter() {
+            public void handleAbout(ApplicationEvent e) {
+                mainWindow.getAboutMenuItem().doClick();
+                e.setHandled(true);
+            }
+
+            public void handlePreferences(ApplicationEvent e) {
+                mainWindow.getOptionsButton().doClick();
+                e.setHandled(true);
+            }
+
+            public void handleQuit(ApplicationEvent e) {
+                mainWindow.getExitMenuItem().doClick();
+                e.setHandled(true);
+            }
+        });
+	}
+
 }

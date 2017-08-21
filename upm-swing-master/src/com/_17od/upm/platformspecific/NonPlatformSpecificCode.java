@@ -29,4 +29,9 @@ public class NonPlatformSpecificCode extends PlatformSpecificCode {
         //Do nothing
     }
 
+	public void initialiseApplication(com._17od.upm.gui.JavaFX.MainWindow mainWindow) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
