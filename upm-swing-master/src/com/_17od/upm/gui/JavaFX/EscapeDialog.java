@@ -29,34 +29,48 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkEvent.EventType;
+
+import com.sun.corba.se.pept.transport.EventHandler;
+import com.sun.javafx.css.StyleCache.Key;
+
 import javafx.*;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
 
-public class EscapeDialog extends JDialog {
+public class EscapeDialog {
 
     private static final long serialVersionUID = 1L;
-    
-    public EscapeDialog(JFrame frame, String title, boolean modal) {
-        super(frame, title, modal);
+    Stage dialog;
+    String title;
+    Scene display;
+    boolean modal;
+    public EscapeDialog(Scene frame, String title, boolean modal) {
+        dialog = new Stage();
+        dialog.initStyle(StageStyle.UTILITY);
+        display = frame;
+        dialog.setScene(display);
+        dialog.show();
     }
     
 
-    public EscapeDialog(JFrame frame, boolean modal) {
-        super(frame, modal);
+    public EscapeDialog(Scene frame, boolean modal) {
+    	dialog = new Stage();
+        dialog.initStyle(StageStyle.UTILITY);
+        display = frame;
+        dialog.setScene(display);
+        dialog.show();
     }
 
 
-    protected JRootPane createRootPane() {
-        ActionListener actionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                setVisible(false);
-                dispose();
-            }
-        };
-        JRootPane rootPane = new JRootPane();
-        KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-        rootPane.registerKeyboardAction(actionListener, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
+    protected Pane createPane() {
+       
+        Pane rootPane = new Pane();
         return rootPane;
     }
 
