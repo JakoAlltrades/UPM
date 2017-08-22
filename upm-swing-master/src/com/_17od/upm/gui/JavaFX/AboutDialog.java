@@ -37,11 +37,13 @@ import javax.swing.JTextArea;
 
 import com._17od.upm.util.Translator;
 
+import javafx.scene.Scene;
+
 public class AboutDialog extends EscapeDialog {
 
     private static final long serialVersionUID = 1L;
 
-    public AboutDialog(JFrame frame) {
+    public AboutDialog(Scene frame) {
         super(frame, Translator.translate("aboutUPM"), true);
 
         String version = AboutDialog.class.getPackage().getImplementationVersion();
@@ -49,7 +51,7 @@ public class AboutDialog extends EscapeDialog {
             version = "<version unknown>";
         }
 
-        JPanel panel = new JPanel();
+        Pane panel = new Pane(frame);
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
         JTextArea jTextArea = new JTextArea();
