@@ -2,6 +2,7 @@ package JavaFXGuiObjects;
 
 import com._17od.upm.gui.JavaFX.AboutDialog;
 
+import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -15,7 +16,7 @@ public class JFXAbout extends JFXDialog {
             version = "<version unknown>";
         }
         
-        GridPane gp = new GridPane();
+        Scene gp = new Scene(frame.);
         //set the pane
 	}
 

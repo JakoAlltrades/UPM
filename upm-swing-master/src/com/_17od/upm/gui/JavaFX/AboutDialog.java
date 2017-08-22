@@ -37,13 +37,16 @@ import javax.swing.JTextArea;
 
 import com._17od.upm.util.Translator;
 
+import javafx.stage.Stage;
+
 public class AboutDialog extends EscapeDialog {
 
     private static final long serialVersionUID = 1L;
 
-    public AboutDialog(JFrame frame) {
-        super(frame, Translator.translate("aboutUPM"), true);
-
+    public AboutDialog(Stage frame) {
+        //super(frame, Translator.translate("aboutUPM"), true);
+    	
+    	
         String version = AboutDialog.class.getPackage().getImplementationVersion();
         if (version == null) {
             version = "<version unknown>";
