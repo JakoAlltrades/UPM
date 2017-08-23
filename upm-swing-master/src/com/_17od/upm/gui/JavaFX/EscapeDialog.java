@@ -20,26 +20,15 @@
  */
 package com._17od.upm.gui.JavaFX;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JRootPane;
-import javax.swing.KeyStroke;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkEvent.EventType;
-
-import com.sun.corba.se.pept.transport.EventHandler;
-import com.sun.javafx.css.StyleCache.Key;
-
 import javafx.*;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 
 
@@ -54,6 +43,18 @@ public class EscapeDialog {
         dialog = new Stage();
         dialog.initStyle(StageStyle.UTILITY);
         display = frame;
+        display.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler() 
+        {
+			public void handle(Event event) {
+				// TODO Auto-generated method stub
+				KeyEvent e = (KeyEvent) event;
+				if(e.getCode() == KeyCode.ESCAPE)
+        		{
+        			dialog.close();
+        		}
+				
+			}
+        });
         dialog.setScene(display);
         dialog.show();
     }
@@ -63,6 +64,18 @@ public class EscapeDialog {
     	dialog = new Stage();
         dialog.initStyle(StageStyle.UTILITY);
         display = frame;
+        display.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler() 
+        {
+			public void handle(Event event) {
+				// TODO Auto-generated method stub
+				KeyEvent e = (KeyEvent) event;
+				if(e.getCode() == KeyCode.ESCAPE)
+        		{
+        			dialog.close();
+        		}
+				
+			}
+        });
         dialog.setScene(display);
         dialog.show();
     }
