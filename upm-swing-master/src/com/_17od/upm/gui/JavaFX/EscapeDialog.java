@@ -34,14 +34,25 @@ import javafx.scene.input.KeyEvent;
 public class EscapeDialog {
 
     private static final long serialVersionUID = 1L;
-    Stage dialog;
+    Stage window;
     String title;
     Scene display;
     boolean modal;
+    
+    public void setTitle(String title)
+    {
+    	this.title =title;
+    }
+    
+    public void setDialog(Stage window)
+    {
+    	this.window = window;
+    }
+    
     public EscapeDialog(Scene frame, String title, boolean modal) 
     {
-        dialog = new Stage();
-        dialog.initStyle(StageStyle.UTILITY);
+        window = new Stage();
+        window.initStyle(StageStyle.UTILITY);
         display = frame;
         display.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler() 
         {
@@ -50,19 +61,19 @@ public class EscapeDialog {
 				KeyEvent e = (KeyEvent) event;
 				if(e.getCode() == KeyCode.ESCAPE)
         		{
-        			dialog.close();
+        			window.close();
         		}
 			}
         });
-        dialog.setScene(display);
-        dialog.show();
+        window.setScene(display);
+        window.show();
     }
     
 
     public EscapeDialog(Scene frame, boolean modal)
     {
-    	dialog = new Stage();
-        dialog.initStyle(StageStyle.UTILITY);
+    	window = new Stage();
+        window.initStyle(StageStyle.UTILITY);
         display = frame;
         display.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler() 
         {
@@ -71,12 +82,12 @@ public class EscapeDialog {
 				KeyEvent e = (KeyEvent) event;
 				if(e.getCode() == KeyCode.ESCAPE)
         		{
-        			dialog.close();
+        			window.close();
         		}
 			}
         });
-        dialog.setScene(display);
-        dialog.show();
+        window.setScene(display);
+        window.show();
     }
 
 

@@ -20,43 +20,17 @@
  */
 package com._17od.upm.gui.JavaFX;
 
-import java.awt.Container;
-import java.awt.Desktop;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import javafx.*;
+import javafx.scene.Scene;
+import javafx.scene.control.TextField;
+import javafx.scene.input.Clipboard;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextArea;
+
 import java.security.SecureRandom;
 import java.util.ArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javafx.*;
 
 import org.apache.commons.validator.routines.UrlValidator;
 
@@ -108,14 +82,14 @@ public class AccountDialog extends EscapeDialog {
 			'-', '+', '=', '|', '/', '<', '>', '.', '?', ';', ':' };
 
 	private AccountInformation pAccount;
-	private JTextField userId;
-	private JPasswordField password;
-	private JTextArea notes;
-	private JTextField url;
-	private JTextField accountName;
+	private TextField userId;
+	private PasswordField password;
+	private TextArea notes;
+	private TextField url;
+	private TextField accountName;
 	private boolean okClicked = false;
 	private ArrayList existingAccounts;
-	private JFrame parentWindow;
+	private Scene parentWindow;
 	private boolean accountChanged = false;
 	private char defaultEchoChar;
 
@@ -133,6 +107,7 @@ public class AccountDialog extends EscapeDialog {
 					
 				}
 			}});
+			
 
 		// Set the title based on weather we've been opened in readonly mode and
 		// weather the
@@ -158,7 +133,7 @@ public class AccountDialog extends EscapeDialog {
 		Container container = getContentPane();
 
 		// The AccountName Row
-		JLabel accountLabel = new JLabel(Translator.translate("account"));
+		Label accountLabel = new Label(Translator.translate("account"));
 		c.gridx = 0;
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.LINE_START;
@@ -173,7 +148,7 @@ public class AccountDialog extends EscapeDialog {
 		// buttons.
 		JPanel accountPanel = new JPanel(new GridBagLayout());
 
-		accountName = new JTextField(new String(pAccount.getAccountName()), 20);
+		accountName = new TextField(new String(pAccount.getAccountName().substring(0, 20)));
 		if (readOnly) {
 			accountName.setEditable(false);
 		}
@@ -212,7 +187,7 @@ public class AccountDialog extends EscapeDialog {
 		c.fill = GridBagConstraints.NONE;
 		accountPanel.add(acctCopyButton, c);
 
-		JButton acctPasteButton = new JButton();
+		Button acctPasteButton = new Button();
 		acctPasteButton.setIcon(Util.loadImage("paste-icon.png"));
 		acctPasteButton.setToolTipText("Paste");
 		acctPasteButton.setEnabled(!readOnly);
@@ -243,7 +218,7 @@ public class AccountDialog extends EscapeDialog {
 		container.add(accountPanel, c);
 
 		// Userid Row
-		JLabel useridLabel = new JLabel(Translator.translate("userid"));
+		Label useridLabel = new Label(Translator.translate("userid"));
 		c.gridx = 0;
 		c.gridy = 1;
 		c.anchor = GridBagConstraints.LINE_START;
@@ -258,7 +233,7 @@ public class AccountDialog extends EscapeDialog {
 		// buttons.
 		JPanel idPanel = new JPanel(new GridBagLayout());
 
-		userId = new JTextField(new String(pAccount.getUserId()), 20);
+		userId = new TextField(new String(pAccount.getUserId()));
 		if (readOnly) {
 			userId.setEditable(false);
 		}
@@ -277,7 +252,7 @@ public class AccountDialog extends EscapeDialog {
 			}
 		});
 
-		JButton idCopyButton = new JButton();
+		Button idCopyButton = new Button();//check comment above
 		idCopyButton.setIcon(Util.loadImage("copy-icon.png"));
 		idCopyButton.setToolTipText("Copy");
 		idCopyButton.setEnabled(true);
@@ -297,7 +272,7 @@ public class AccountDialog extends EscapeDialog {
 		c.fill = GridBagConstraints.NONE;
 		idPanel.add(idCopyButton, c);
 
-		JButton idPasteButton = new JButton();
+		Button idPasteButton = new Button();
 		idPasteButton.setIcon(Util.loadImage("paste-icon.png"));
 		idPasteButton.setToolTipText("Paste");
 		idPasteButton.setEnabled(!readOnly);
@@ -328,7 +303,7 @@ public class AccountDialog extends EscapeDialog {
 		container.add(idPanel, c);
 
 		// Password Row
-		JLabel passwordLabel = new JLabel(Translator.translate("password"));
+		Label passwordLabel = new Label(Translator.translate("password"));
 		c.gridx = 0;
 		c.gridy = 2;
 		c.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -343,7 +318,7 @@ public class AccountDialog extends EscapeDialog {
 		// paste buttons, and hide password checkbox
 		JPanel passwordPanel = new JPanel(new GridBagLayout());
 
-		password = new JPasswordField(new String(pAccount.getPassword()), 20);
+		password = new PasswordField(new String(pAccount.getPassword()).substring(0,20));
 		// allow CTRL-C on the password field
 		password.putClientProperty("JPasswordField.cutCopyAllowed", Boolean.TRUE);
 		password.setEditable(!readOnly);
@@ -362,7 +337,7 @@ public class AccountDialog extends EscapeDialog {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		passwordPanel.add(password, c);
 
-		JButton generateRandomPasswordButton = new JButton(Translator.translate("generate"));
+		Button generateRandomPasswordButton = new Button(Translator.translate("generate"));
 		if (readOnly) {
 			generateRandomPasswordButton.setEnabled(false);
 		}
@@ -409,7 +384,7 @@ public class AccountDialog extends EscapeDialog {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		passwordPanel.add(generateRandomPasswordButton, c);
 
-		JButton pwCopyButton = new JButton();
+		Button pwCopyButton = new Button();
 		pwCopyButton.setIcon(Util.loadImage("copy-icon.png"));
 		pwCopyButton.setToolTipText("Copy");
 		pwCopyButton.setEnabled(true);
@@ -429,7 +404,7 @@ public class AccountDialog extends EscapeDialog {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		passwordPanel.add(pwCopyButton, c);
 
-		JButton pwPasteButton = new JButton();
+		Button pwPasteButton = new Button();
 		pwPasteButton.setIcon(Util.loadImage("paste-icon.png"));
 		pwPasteButton.setToolTipText("Paste");
 		pwPasteButton.setEnabled(!readOnly);
@@ -449,7 +424,7 @@ public class AccountDialog extends EscapeDialog {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		passwordPanel.add(pwPasteButton, c);
 
-		JCheckBox hidePasswordCheckbox = new JCheckBox(Translator.translate("hide"), true);
+		CheckBox hidePasswordCheckbox = new CheckBox(Translator.translate("hide"), true);
 		defaultEchoChar = password.getEchoChar();
 		hidePasswordCheckbox.setMargin(new Insets(5, 0, 5, 0));
 		hidePasswordCheckbox.addItemListener(new ItemListener() {
@@ -487,7 +462,7 @@ public class AccountDialog extends EscapeDialog {
 		container.add(passwordPanel, c);
 
 		// URL Row
-		JLabel urlLabel = new JLabel(Translator.translate("url"));
+		Label urlLabel = new Label(Translator.translate("url"));
 		c.gridx = 0;
 		c.gridy = 3;
 		c.anchor = GridBagConstraints.LINE_START;
@@ -520,11 +495,12 @@ public class AccountDialog extends EscapeDialog {
 			}
 		});
 
-		final JButton urlLaunchButton = new JButton();
+		final Button urlLaunchButton = new Button();
 		urlLaunchButton.setIcon(Util.loadImage("launch-url-sm.png"));
 		urlLaunchButton.setToolTipText("Launch URL");
 		urlLaunchButton.setEnabled(true);
 		urlLaunchButton.setMargin(new Insets(0, 0, 0, 0));
+		// Major changes will be done here
 		urlLaunchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				String urlText = url.getText();
@@ -559,7 +535,7 @@ public class AccountDialog extends EscapeDialog {
 		c.fill = GridBagConstraints.NONE;
 		urlPanel.add(urlLaunchButton, c);
 
-		JButton urlCopyButton = new JButton();
+		Button urlCopyButton = new Button();
 		urlCopyButton.setIcon(Util.loadImage("copy-icon.png"));
 		urlCopyButton.setToolTipText("Copy");
 		urlCopyButton.setEnabled(true);
@@ -579,7 +555,7 @@ public class AccountDialog extends EscapeDialog {
 		c.fill = GridBagConstraints.NONE;
 		urlPanel.add(urlCopyButton, c);
 
-		JButton urlPasteButton = new JButton();
+		Button urlPasteButton = new Button();
 		urlPasteButton.setIcon(Util.loadImage("paste-icon.png"));
 		urlPasteButton.setToolTipText("Paste");
 		urlPasteButton.setEnabled(!readOnly);
@@ -610,7 +586,7 @@ public class AccountDialog extends EscapeDialog {
 		container.add(urlPanel, c);
 
 		// Notes Row
-		JLabel notesLabel = new JLabel(Translator.translate("notes"));
+		Label notesLabel = new Label(Translator.translate("notes"));
 		c.gridx = 0;
 		c.gridy = 4;
 		c.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -625,7 +601,7 @@ public class AccountDialog extends EscapeDialog {
 		// buttons.
 		JPanel notesPanel = new JPanel(new GridBagLayout());
 
-		notes = new JTextArea(new String(pAccount.getNotes()), 10, 20);
+		notes = new TextArea(new String(pAccount.getNotes()), 10, 20);
 		if (readOnly) {
 			notes.setEditable(false);
 		}
@@ -642,7 +618,7 @@ public class AccountDialog extends EscapeDialog {
 		c.fill = GridBagConstraints.BOTH;
 		notesPanel.add(notesScrollPane, c);
 
-		JButton notesCopyButton = new JButton();
+		Button notesCopyButton = new Button();
 		notesCopyButton.setIcon(Util.loadImage("copy-icon.png"));
 		notesCopyButton.setToolTipText("Copy");
 		notesCopyButton.setEnabled(true);
@@ -662,7 +638,7 @@ public class AccountDialog extends EscapeDialog {
 		c.fill = GridBagConstraints.NONE;
 		notesPanel.add(notesCopyButton, c);
 
-		JButton notesPasteButton = new JButton();
+		Button notesPasteButton = new Button();
 		notesPasteButton.setIcon(Util.loadImage("paste-icon.png"));
 		notesPasteButton.setToolTipText("Paste");
 		notesPasteButton.setEnabled(!readOnly);
@@ -693,7 +669,7 @@ public class AccountDialog extends EscapeDialog {
 		container.add(notesPanel, c);
 
 		// Seperator Row
-		JSeparator sep = new JSeparator();
+		Separator sep = new Separator();
 		c.gridx = 0;
 		c.gridy = 5;
 		c.anchor = GridBagConstraints.PAGE_END;
@@ -706,7 +682,7 @@ public class AccountDialog extends EscapeDialog {
 
 		// Button Row
 		JPanel buttonPanel = new JPanel();
-		JButton okButton = new JButton(Translator.translate("ok"));
+		Button okButton = new Button(Translator.translate("ok"));
 		// Link Enter key to okButton
 		getRootPane().setDefaultButton(okButton);
 		okButton.addActionListener(new ActionListener() {
@@ -757,6 +733,8 @@ public class AccountDialog extends EscapeDialog {
 		//
 		// Only check if an account with the same name exists if the account
 		// name has actually changed
+		
+		//major changes here
 		if (accountChanged && existingAccounts.indexOf(accountName.getText().trim()) > -1) {
 			JOptionPane.showMessageDialog(parentWindow,
 					Translator.translate("accountAlreadyExistsWithName", accountName.getText().trim()),
@@ -956,8 +934,8 @@ public class AccountDialog extends EscapeDialog {
 	 * 
 	 * @param textField
 	 */
-	public void copyTextField(JTextField textField) {
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+	public void copyTextField(TextField textField) {
+		Clipboard clipboard = Clipboard.getSystemClipboard();
 		StringSelection selected = new StringSelection(textField.getText());
 		clipboard.setContents(selected, selected);
 	}
@@ -968,8 +946,8 @@ public class AccountDialog extends EscapeDialog {
 	 * 
 	 * @param textArea
 	 */
-	public void copyTextArea(JTextArea textArea) {
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+	public void copyTextArea(TextArea textArea) {
+		Clipboard clipboard = Clipboard.getSystemClipboard();
 		StringSelection selected = new StringSelection(textArea.getSelectedText());
 		clipboard.setContents(selected, selected);
 	}
@@ -980,9 +958,9 @@ public class AccountDialog extends EscapeDialog {
 	 * 
 	 * @param textField
 	 */
-	public void pasteToTextField(JTextField textField) {
+	public void pasteToTextField(TextField textField) {
 		String text = "";
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		Clipboard clipboard = Clipboard.getSystemClipboard();
 		Transferable clipText = clipboard.getContents(null);
 		if ((clipText != null) && clipText.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 			try {
@@ -1002,9 +980,9 @@ public class AccountDialog extends EscapeDialog {
 	 * 
 	 * @param textArea
 	 */
-	public void pasteToTextArea(JTextArea textArea) {
+	public void pasteToTextArea(TextArea textArea) {
 		String text = "";
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		Clipboard clipboard = Clipboard.getSystemClipboard();
 		Transferable clipText = clipboard.getContents(null);
 		if ((clipText != null) && clipText.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 			try {
