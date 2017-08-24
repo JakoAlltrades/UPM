@@ -20,7 +20,6 @@
  */
 package com._17od.upm.gui.JavaFX;
 
-import javafx.*;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -39,7 +38,8 @@ public class EscapeDialog {
     String title;
     Scene display;
     boolean modal;
-    public EscapeDialog(Scene frame, String title, boolean modal) {
+    public EscapeDialog(Scene frame, String title, boolean modal) 
+    {
         dialog = new Stage();
         dialog.initStyle(StageStyle.UTILITY);
         display = frame;
@@ -52,7 +52,6 @@ public class EscapeDialog {
         		{
         			dialog.close();
         		}
-				
 			}
         });
         dialog.setScene(display);
@@ -60,7 +59,8 @@ public class EscapeDialog {
     }
     
 
-    public EscapeDialog(Scene frame, boolean modal) {
+    public EscapeDialog(Scene frame, boolean modal)
+    {
     	dialog = new Stage();
         dialog.initStyle(StageStyle.UTILITY);
         display = frame;
@@ -73,7 +73,6 @@ public class EscapeDialog {
         		{
         			dialog.close();
         		}
-				
 			}
         });
         dialog.setScene(display);
@@ -81,8 +80,8 @@ public class EscapeDialog {
     }
 
 
-    protected Pane createPane() {
-       
+    protected Pane createPane() 
+    {
         Pane rootPane = new Pane();
         return rootPane;
     }

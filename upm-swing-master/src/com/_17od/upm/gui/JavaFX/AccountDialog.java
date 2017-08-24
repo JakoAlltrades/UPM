@@ -119,7 +119,7 @@ public class AccountDialog extends EscapeDialog {
 	private boolean accountChanged = false;
 	private char defaultEchoChar;
 
-	public AccountDialog(AccountInformation account, JFrame parentWindow, boolean readOnly,
+	public AccountDialog(AccountInformation account, Scene parentWindow, boolean readOnly,
 			ArrayList existingAccounts) {
 		super(parentWindow, true);
 
