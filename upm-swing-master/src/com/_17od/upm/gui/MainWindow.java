@@ -311,7 +311,7 @@ public class MainWindow extends JFrame implements ActionListener {
 			public void changedUpdate(DocumentEvent e) {
 				// This method never seems to be called
 			}
-			
+
 			public void insertUpdate(DocumentEvent e) {
 				dbActions.filter();
 			}
@@ -411,7 +411,7 @@ public class MainWindow extends JFrame implements ActionListener {
 				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 
 					try {
-						dbActions.reloadDatabaseBefore(new DeleteAccountAction());
+						dbActions.reloadDatabaseBefore((com._17od.upm.gui.MainWindow.ChangeDatabaseAction) new DeleteAccountAction());
 					} catch (InvalidPasswordException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -1054,12 +1054,12 @@ public class MainWindow extends JFrame implements ActionListener {
 			} else if (event.getActionCommand() == MainWindow.SYNC_DATABASE_TXT) {
 				dbActions.syncWithRemoteDatabase();
 			} else if (event.getActionCommand() == MainWindow.ADD_ACCOUNT_TXT) {
-				dbActions.reloadDatabaseBefore(new AddAccountAction());
+				dbActions.reloadDatabaseBefore((com._17od.upm.gui.MainWindow.ChangeDatabaseAction) new AddAccountAction());
 			} else if (event.getActionCommand() == MainWindow.EDIT_ACCOUNT_TXT) {
 				String selectedAccName = (String) this.accountsListview.getSelectedValue();
-				dbActions.reloadDatabaseBefore(new EditAccountAction(selectedAccName));
+				dbActions.reloadDatabaseBefore((com._17od.upm.gui.MainWindow.ChangeDatabaseAction) new EditAccountAction(selectedAccName));
 			} else if (event.getActionCommand() == MainWindow.DELETE_ACCOUNT_TXT) {
-				dbActions.reloadDatabaseBefore(new DeleteAccountAction());
+				dbActions.reloadDatabaseBefore((com._17od.upm.gui.MainWindow.ChangeDatabaseAction) new DeleteAccountAction());
 			} else if (event.getActionCommand() == MainWindow.VIEW_ACCOUNT_TXT) {
 				dbActions.viewAccount();
 			} else if (event.getActionCommand() == MainWindow.OPTIONS_TXT) {
@@ -1069,15 +1069,15 @@ public class MainWindow extends JFrame implements ActionListener {
 			} else if (event.getActionCommand() == MainWindow.RESET_SEARCH_TXT) {
 				dbActions.resetSearch();
 			} else if (event.getActionCommand() == MainWindow.CHANGE_MASTER_PASSWORD_TXT) {
-				dbActions.reloadDatabaseBefore(new ChangeMasterPasswordAction());
+				dbActions.reloadDatabaseBefore((com._17od.upm.gui.MainWindow.ChangeDatabaseAction) new ChangeMasterPasswordAction());
 			} else if (event.getActionCommand() == MainWindow.DATABASE_PROPERTIES_TXT) {
-				dbActions.reloadDatabaseBefore(new ShowDatabasePropertiesAction());
+				dbActions.reloadDatabaseBefore((com._17od.upm.gui.MainWindow.ChangeDatabaseAction) new ShowDatabasePropertiesAction());
 			} else if (event.getActionCommand() == MainWindow.EXIT_TXT) {
 				dbActions.exitApplication();
 			} else if (event.getActionCommand() == MainWindow.EXPORT_TXT) {
 				dbActions.export();
 			} else if (event.getActionCommand() == MainWindow.IMPORT_TXT) {
-				dbActions.reloadDatabaseBefore(new ImportAccountsAction());
+				dbActions.reloadDatabaseBefore((com._17od.upm.gui.MainWindow.ChangeDatabaseAction) new ImportAccountsAction());
 			}
 		} catch (Exception e) {
 			dbActions.errorHandler(e);

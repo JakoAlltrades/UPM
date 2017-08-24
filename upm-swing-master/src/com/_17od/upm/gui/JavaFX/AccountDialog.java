@@ -29,6 +29,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 
+import java.awt.GridBagConstraints;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 
@@ -167,7 +168,7 @@ public class AccountDialog extends EscapeDialog {
 			}
 		});
 
-		JButton acctCopyButton = new JButton();
+		Button acctCopyButton = new Button();
 		acctCopyButton.setIcon(Util.loadImage("copy-icon.png"));
 		acctCopyButton.setToolTipText("Copy");
 		acctCopyButton.setEnabled(true);

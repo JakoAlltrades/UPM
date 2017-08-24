@@ -43,31 +43,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.security.GeneralSecurityException;
 import javax.crypto.IllegalBlockSizeException;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTextField;
-import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
-import javax.swing.ListSelectionModel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+
 import org.apache.commons.validator.routines.UrlValidator;
 import com._17od.upm.crypto.InvalidPasswordException;
 import com._17od.upm.database.AccountInformation;
@@ -76,21 +52,28 @@ import com._17od.upm.platformspecific.PlatformSpecificCode;
 import com._17od.upm.util.Preferences;
 import com._17od.upm.util.Translator;
 import com._17od.upm.util.Util;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.*;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToolBar;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 
 /**
  * This is the main application entry class
  */
-public class MainWindow extends JFrame implements ActionListener {
+public class MainWindow extends Stage implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private static final String applicationName = "Universal Password Manager";
@@ -116,54 +99,54 @@ public class MainWindow extends JFrame implements ActionListener {
 	public static final String IMPORT_TXT = "importMenuItem";
 	public static final String LOCK_TIMER_TXT = "lock";
 
-	private JButton addAccountButton;
-	private JButton editAccountButton;
-	private JButton deleteAccountButton;
-	private JButton copyUsernameButton;
-	private JButton copyPasswordButton;
-	private JButton launchURLButton;
-	private JButton optionsButton;
-	private JButton syncDatabaseButton;
-	private JTextField searchField;
-	private JButton resetSearchButton;
-	private JLabel searchIcon;
+	private Button addAccountButton;
+	private Button editAccountButton;
+	private Button deleteAccountButton;
+	private Button copyUsernameButton;
+	private Button copyPasswordButton;
+	private Button launchURLButton;
+	private Button optionsButton;
+	private Button syncDatabaseButton;
+	private TextField searchField;
+	private Button resetSearchButton;
+	private Label searchIcon;
 
-	private JMenu databaseMenu;
-	private JMenuItem newDatabaseMenuItem;
-	private JMenuItem openDatabaseMenuItem;
-	private JMenuItem openDatabaseFromURLMenuItem;
-	private JMenuItem syncWithRemoteDatabaseMenuItem;
-	private JMenuItem changeMasterPasswordMenuItem;
-	private JMenuItem databasePropertiesMenuItem;
-	private JMenuItem exitMenuItem;
-	private JMenu helpMenu;
-	private JMenuItem aboutMenuItem;
-	private JMenu accountMenu;
-	private JMenuItem addAccountMenuItem;
-	private JMenuItem editAccountMenuItem;
-	private JMenuItem deleteAccountMenuItem;
-	private JMenuItem viewAccountMenuItem;
-	private JMenuItem copyUsernameMenuItem;
-	private JMenuItem copyPasswordMenuItem;
-	private JMenuItem launchURLMenuItem;
-	private JMenuItem exportMenuItem;
-	private JMenuItem importMenuItem;
+	private Menu databaseMenu;
+	private MenuItem newDatabaseMenuItem;
+	private MenuItem openDatabaseMenuItem;
+	private MenuItem openDatabaseFromURLMenuItem;
+	private MenuItem syncWithRemoteDatabaseMenuItem;
+	private MenuItem changeMasterPasswordMenuItem;
+	private MenuItem databasePropertiesMenuItem;
+	private MenuItem exitMenuItem;
+	private Menu helpMenu;
+	private MenuItem aboutMenuItem;
+	private Menu accountMenu;
+	private MenuItem addAccountMenuItem;
+	private MenuItem editAccountMenuItem;
+	private MenuItem deleteAccountMenuItem;
+	private MenuItem viewAccountMenuItem;
+	private MenuItem copyUsernameMenuItem;
+	private MenuItem copyPasswordMenuItem;
+	private MenuItem launchURLMenuItem;
+	private MenuItem exportMenuItem;
+	private MenuItem importMenuItem;
 
-	private JList accountsListview;
-	private JLabel statusBar = new JLabel(" ");
-	private JPanel databaseFileChangedPanel;
+	private ListView accountsListview;
+	private Label statusBar = new Label(" ");
+	private Pane databaseFileChangedPanel;
 	public static MainWindow AppWindow;
 
 	private DatabaseActions dbActions;
 
 	public MainWindow(String title) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
-			UnsupportedLookAndFeelException, IllegalBlockSizeException, IOException, GeneralSecurityException,
+			IllegalBlockSizeException, IOException, GeneralSecurityException,
 			ProblemReadingDatabaseFile {
-		super(title);
+		super();
 
-		setIconImage(Util.loadImage("upm.gif").getImage());
+		getIcons().add((Util.loadImage("upm.gif").getImage()));
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		PlatformSpecificCode.getInstance().initialiseApplication(this);
 
@@ -173,8 +156,9 @@ public class MainWindow extends JFrame implements ActionListener {
 		addComponentsToPane();
 
 		// Add listener to store current position and size on closing
-		this.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
+		this.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, new EventHandler() {
+			public void handle(Event e) {
+				// TODO Auto-generated method stub
 				storeWindowBounds();
 				try {
 					Preferences.save();
@@ -183,12 +167,12 @@ public class MainWindow extends JFrame implements ActionListener {
 					ex.printStackTrace();
 				}
 			}
-
+			
 		});
 
 		// Display the window.
-		pack();
-		setLocationRelativeTo(null);
+		//pack();
+		//setLocationRelativeTo(null);
 		boolean restore = Preferences.get(Preferences.ApplicationOptions.REMEMBER_WINDOW_POSITION, "false")
 				.equals("true");
 		if (restore) {
@@ -197,7 +181,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		Boolean appAlwaysonTop = new Boolean(
 				Preferences.get(Preferences.ApplicationOptions.MAINWINDOW_ALWAYS_ON_TOP, "false"));
 		setAlwaysOnTop(appAlwaysonTop.booleanValue());
-		setVisible(true);
+		//setVisible(true);
 
 		try {
 			// Load the startup database if it's configured
@@ -217,7 +201,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		// Give the search field focus
 		// I'm using requestFocusInWindow() rathar than requestFocus()
 		// because the javadocs recommend it
-		searchField.requestFocusInWindow();
+		searchField.requestFocus();
 
 	}
 
@@ -228,20 +212,20 @@ public class MainWindow extends JFrame implements ActionListener {
 	}
 
 	public static void main(String[] args) {
+		//restructure so it launches from javafx
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-
+					Alert ad = new Alert(Alert.AlertType.ERROR);
 				try {
 					// Use the System look and feel
 					Preferences.load();
 					Translator.initialise();
 					Double jvmVersion = new Double(System.getProperty("java.specification.version"));
 					if (jvmVersion.doubleValue() < 1.4) {
-						JOptionPane.showMessageDialog(null, Translator.translate("requireJava14"),
-								Translator.translate("problem"), JOptionPane.ERROR_MESSAGE);
+						ad.setContentText(Translator.translate("problem")+"You done fucked up now");
+						ad.show();
 						System.exit(1);
 					} else {
-						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 						AppWindow = new MainWindow(applicationName);
 					}
 
@@ -254,13 +238,14 @@ public class MainWindow extends JFrame implements ActionListener {
 
 	private void addComponentsToPane() {
 
+		
 		// Ensure the layout manager is a BorderLayout
-		if (!(getContentPane().getLayout() instanceof GridBagLayout)) {
+		/*if (!(getContentPane().getLayout() instanceof GridBagLayout)) {
 			getContentPane().setLayout(new GridBagLayout());
 		}
 
 		// Create the menubar
-		setJMenuBar(createMenuBar());
+		setMenuBar(createMenuBar());
 
 		GridBagConstraints c = new GridBagConstraints();
 
@@ -311,7 +296,7 @@ public class MainWindow extends JFrame implements ActionListener {
 			public void changedUpdate(DocumentEvent e) {
 				// This method never seems to be called
 			}
-
+			
 			public void insertUpdate(DocumentEvent e) {
 				dbActions.filter();
 			}
@@ -411,7 +396,7 @@ public class MainWindow extends JFrame implements ActionListener {
 				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 
 					try {
-						dbActions.reloadDatabaseBefore((com._17od.upm.gui.MainWindow.ChangeDatabaseAction) new DeleteAccountAction());
+						dbActions.reloadDatabaseBefore(new DeleteAccountAction());
 					} catch (InvalidPasswordException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -481,21 +466,20 @@ public class MainWindow extends JFrame implements ActionListener {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		getContentPane().add(statusBar, c);
 
-	}
+	}*/
 
 	public void setFileChangedPanelVisible(boolean visible) {
 		databaseFileChangedPanel.setVisible(visible);
 	}
 
-	private JToolBar createToolBar() {
+	private ToolBar createToolBar() {
 
-		JToolBar toolbar = new JToolBar();
-		toolbar.setFloatable(false);
-		toolbar.setRollover(true);
+		ToolBar toolbar = new ToolBar();
 
 		// The "Add Account" button
-		addAccountButton = new JButton();
-		addAccountButton.setToolTipText(Translator.translate(ADD_ACCOUNT_TXT));
+		//change to images with clickevents
+		addAccountButton = new Button();
+		addAccountButton.setTooltip(Translator.translate(ADD_ACCOUNT_TXT));
 		addAccountButton.setIcon(Util.loadImage("add_account.gif"));
 		addAccountButton.setDisabledIcon(Util.loadImage("add_account_d.gif"));
 		;
@@ -505,8 +489,8 @@ public class MainWindow extends JFrame implements ActionListener {
 		toolbar.add(addAccountButton);
 
 		// The "Edit Account" button
-		editAccountButton = new JButton();
-		editAccountButton.setToolTipText(Translator.translate(EDIT_ACCOUNT_TXT));
+		editAccountButton = new Button();
+		editAccountButton.setTooltip(Translator.translate(EDIT_ACCOUNT_TXT));
 		editAccountButton.setIcon(Util.loadImage("edit_account.gif"));
 		editAccountButton.setDisabledIcon(Util.loadImage("edit_account_d.gif"));
 		;
@@ -516,8 +500,8 @@ public class MainWindow extends JFrame implements ActionListener {
 		toolbar.add(editAccountButton);
 
 		// The "Delete Account" button
-		deleteAccountButton = new JButton();
-		deleteAccountButton.setToolTipText(Translator.translate(DELETE_ACCOUNT_TXT));
+		deleteAccountButton = new Button();
+		deleteAccountButton.setTooltip(Translator.translate(DELETE_ACCOUNT_TXT));
 		deleteAccountButton.setIcon(Util.loadImage("delete_account.gif"));
 		deleteAccountButton.setDisabledIcon(Util.loadImage("delete_account_d.gif"));
 		;
@@ -526,11 +510,11 @@ public class MainWindow extends JFrame implements ActionListener {
 		deleteAccountButton.setActionCommand(DELETE_ACCOUNT_TXT);
 		toolbar.add(deleteAccountButton);
 
-		toolbar.addSeparator();
+		//stoolbar.addSeparator();
 
 		// The "Copy Username" button
-		copyUsernameButton = new JButton();
-		copyUsernameButton.setToolTipText(Translator.translate(COPY_USERNAME_TXT));
+		copyUsernameButton = new Button();
+		copyUsernameButton.setTooltip(Translator.translate(COPY_USERNAME_TXT));
 		copyUsernameButton.setIcon(Util.loadImage("copy_username.gif"));
 		copyUsernameButton.setDisabledIcon(Util.loadImage("copy_username_d.gif"));
 		;
@@ -543,8 +527,8 @@ public class MainWindow extends JFrame implements ActionListener {
 		toolbar.add(copyUsernameButton);
 
 		// The "Copy Password" button
-		copyPasswordButton = new JButton();
-		copyPasswordButton.setToolTipText(Translator.translate(COPY_PASSWORD_TXT));
+		copyPasswordButton = new Button();
+		copyPasswordButton.setTooltip(Translator.translate(COPY_PASSWORD_TXT));
 		copyPasswordButton.setIcon(Util.loadImage("copy_password.gif"));
 		copyPasswordButton.setDisabledIcon(Util.loadImage("copy_password_d.gif"));
 		;
@@ -557,8 +541,8 @@ public class MainWindow extends JFrame implements ActionListener {
 		toolbar.add(copyPasswordButton);
 
 		// The "Launch URL" button
-		launchURLButton = new JButton();
-		launchURLButton.setToolTipText(Translator.translate(LAUNCH_URL_TXT));
+		launchURLButton = new Button();
+		launchURLButton.setTooltip(Translator.translate(LAUNCH_URL_TXT));
 		launchURLButton.setIcon(Util.loadImage("launch_URL.gif"));
 		launchURLButton.setDisabledIcon(Util.loadImage("launch_URL_d.gif"));
 		;
@@ -572,9 +556,9 @@ public class MainWindow extends JFrame implements ActionListener {
 				// Check if the selected url is null or emty and inform the user
 				// via JoptioPane message
 				if ((uRl == null) || (uRl.length() == 0)) {
-					JOptionPane.showMessageDialog(launchURLButton.getParent(),
+					Pane.showMessageDialog(launchURLButton.getParent(),
 							Translator.translate("EmptyUrlJoptionpaneMsg"),
-							Translator.translate("UrlErrorJoptionpaneTitle"), JOptionPane.WARNING_MESSAGE);
+							Translator.translate("UrlErrorJoptionpaneTitle"), Pane.WARNING_MESSAGE);
 
 					// Check if the selected url is a valid formated url(via
 					// urlIsValid() method) and inform the user via JoptioPane
@@ -599,7 +583,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
 		// The "Option" button
 		optionsButton = new JButton();
-		optionsButton.setToolTipText(Translator.translate(OPTIONS_TXT));
+		optionsButton.setTooltip(Translator.translate(OPTIONS_TXT));
 		optionsButton.setIcon(Util.loadImage("options.gif"));
 		optionsButton.setDisabledIcon(Util.loadImage("options_d.gif"));
 		;
@@ -612,7 +596,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
 		// The Sync database button
 		syncDatabaseButton = new JButton();
-		syncDatabaseButton.setToolTipText(Translator.translate(SYNC_DATABASE_TXT));
+		syncDatabaseButton.setTooltip(Translator.translate(SYNC_DATABASE_TXT));
 		syncDatabaseButton.setIcon(Util.loadImage("sync.png"));
 		syncDatabaseButton.setDisabledIcon(Util.loadImage("sync_d.png"));
 		;
@@ -1054,12 +1038,12 @@ public class MainWindow extends JFrame implements ActionListener {
 			} else if (event.getActionCommand() == MainWindow.SYNC_DATABASE_TXT) {
 				dbActions.syncWithRemoteDatabase();
 			} else if (event.getActionCommand() == MainWindow.ADD_ACCOUNT_TXT) {
-				dbActions.reloadDatabaseBefore((com._17od.upm.gui.MainWindow.ChangeDatabaseAction) new AddAccountAction());
+				dbActions.reloadDatabaseBefore(new AddAccountAction());
 			} else if (event.getActionCommand() == MainWindow.EDIT_ACCOUNT_TXT) {
 				String selectedAccName = (String) this.accountsListview.getSelectedValue();
-				dbActions.reloadDatabaseBefore((com._17od.upm.gui.MainWindow.ChangeDatabaseAction) new EditAccountAction(selectedAccName));
+				dbActions.reloadDatabaseBefore(new EditAccountAction(selectedAccName));
 			} else if (event.getActionCommand() == MainWindow.DELETE_ACCOUNT_TXT) {
-				dbActions.reloadDatabaseBefore((com._17od.upm.gui.MainWindow.ChangeDatabaseAction) new DeleteAccountAction());
+				dbActions.reloadDatabaseBefore(new DeleteAccountAction());
 			} else if (event.getActionCommand() == MainWindow.VIEW_ACCOUNT_TXT) {
 				dbActions.viewAccount();
 			} else if (event.getActionCommand() == MainWindow.OPTIONS_TXT) {
@@ -1069,15 +1053,15 @@ public class MainWindow extends JFrame implements ActionListener {
 			} else if (event.getActionCommand() == MainWindow.RESET_SEARCH_TXT) {
 				dbActions.resetSearch();
 			} else if (event.getActionCommand() == MainWindow.CHANGE_MASTER_PASSWORD_TXT) {
-				dbActions.reloadDatabaseBefore((com._17od.upm.gui.MainWindow.ChangeDatabaseAction) new ChangeMasterPasswordAction());
+				dbActions.reloadDatabaseBefore(new ChangeMasterPasswordAction());
 			} else if (event.getActionCommand() == MainWindow.DATABASE_PROPERTIES_TXT) {
-				dbActions.reloadDatabaseBefore((com._17od.upm.gui.MainWindow.ChangeDatabaseAction) new ShowDatabasePropertiesAction());
+				dbActions.reloadDatabaseBefore(new ShowDatabasePropertiesAction());
 			} else if (event.getActionCommand() == MainWindow.EXIT_TXT) {
 				dbActions.exitApplication();
 			} else if (event.getActionCommand() == MainWindow.EXPORT_TXT) {
 				dbActions.export();
 			} else if (event.getActionCommand() == MainWindow.IMPORT_TXT) {
-				dbActions.reloadDatabaseBefore((com._17od.upm.gui.MainWindow.ChangeDatabaseAction) new ImportAccountsAction());
+				dbActions.reloadDatabaseBefore(new ImportAccountsAction());
 			}
 		} catch (Exception e) {
 			dbActions.errorHandler(e);
@@ -1140,7 +1124,7 @@ public class MainWindow extends JFrame implements ActionListener {
 			helpMenu.setText(Translator.translate("helpMenu"));
 		}
 
-		addAccountButton.setToolTipText(Translator.translate(ADD_ACCOUNT_TXT));
+		addAccountButton.setTooltip(Translator.translate(ADD_ACCOUNT_TXT));
 		editAccountButton.setToolTipText(Translator.translate(EDIT_ACCOUNT_TXT));
 		deleteAccountButton.setToolTipText(Translator.translate(DELETE_ACCOUNT_TXT));
 		copyUsernameButton.setToolTipText(Translator.translate(COPY_USERNAME_TXT));
