@@ -65,7 +65,7 @@ public class AboutDialog extends EscapeDialog {
         textArea.setEditable(false);
         textArea.setFont(new Font("Tahoma", 12));
         //textArea.setBorder(new Border());
-        Stage stage = new Stage();
+        final Stage stage = new Stage();
         Scene scene = new Scene(textArea);
         stage.setScene(scene);
 //        panel.add(textArea);
@@ -77,7 +77,11 @@ public class AboutDialog extends EscapeDialog {
         Button okButton = new Button(Translator.translate("ok"));
         okButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler(){
 			public void handle(Event arg0) {
-			
+				try{
+					stage.close();
+				} catch(Exception e){
+					
+				}
 			}
         	
         });
@@ -89,12 +93,11 @@ public class AboutDialog extends EscapeDialog {
 //        });
         //okButtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         pane.getChildren().add(okButton);
-
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
-        getRootPane().setDefaultButton(okButton);
-        getContentPane().add(panel);
-        
-        setResizable(false);
+        Pane innerPane = new Pane();
+        pane.getChildren().add(innerPane);
+        //setDefaultButton(okButton);
+        //getContentPane().add(panel);
+        //setResizable(false);
         
     }
 
