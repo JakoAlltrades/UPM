@@ -21,15 +21,20 @@
 package com._17od.upm.gui.JavaFX;
 
 import javafx.*;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
+import javafx.scene.layout.Pane;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 
@@ -42,6 +47,11 @@ import com._17od.upm.util.Util;
 
 public class AccountDialog extends EscapeDialog {
 
+	/*This float will be used for the progress bar
+	 *which shows the strength of the password
+	 *other float values will store values to be used to increment the values
+	 *such as length, capLetter, lowerLet, numCheck and specialCheck values*/
+	private float securityValue = 0f;
 	private static final long serialVersionUID = 1L;
 	private static final char[] ALLOWED_CHARS = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
 			'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
@@ -101,13 +111,7 @@ public class AccountDialog extends EscapeDialog {
 		boolean addingAccount = false;
 		
 		//Request focus on Account JDialog when mouse clicked
-		this.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 1) {
-					requestFocus();
-					
-				}
-			}});
+		
 			
 
 		// Set the title based on weather we've been opened in readonly mode and
@@ -128,11 +132,13 @@ public class AccountDialog extends EscapeDialog {
 		this.existingAccounts = existingAccounts;
 		this.parentWindow = parentWindow;
 
-		getContentPane().setLayout(new GridBagLayout());
+		//the layout object was being set as the windows content...
+		GridBagLayout gbl = (new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 
-		Container container = getContentPane();
-
+		//was the container for the objects in the window
+		ObservableList container = (parentWindow.getRoot().getChildrenUnmodifiable());
+		Component co;
 		// The AccountName Row
 		Label accountLabel = new Label(Translator.translate("account"));
 		c.gridx = 0;
@@ -143,11 +149,12 @@ public class AccountDialog extends EscapeDialog {
 		c.weighty = 0;
 		c.gridwidth = 1;
 		c.fill = GridBagConstraints.NONE;
-		container.add(accountLabel, c);
+		container.add(accountLabel);
+		gbl.addLayoutComponent(accountLabel, c);
 
 		// This panel will hold the Account field and the copy and paste
 		// buttons.
-		JPanel accountPanel = new JPanel(new GridBagLayout());
+		Pane accountPanel = new Pane(new GridBagLayout());
 
 		accountName = new TextField(new String(pAccount.getAccountName().substring(0, 20)));
 		if (readOnly) {
