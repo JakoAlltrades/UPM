@@ -133,7 +133,7 @@ public class AccountDialog extends EscapeDialog {
 		this.parentWindow = parentWindow;
 
 		//the layout object was being set as the windows content...
-		GridBagLayout gbl = (new GridBagLayout());
+		GridBagLayout gbl = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
 
 		//was the container for the objects in the window

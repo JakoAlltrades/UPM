@@ -21,6 +21,7 @@
 package com._17od.upm.gui.JavaFX;
 
 import java.awt.Desktop;
+import java.awt.GraphicsDevice;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -54,15 +55,23 @@ import com._17od.upm.util.Translator;
 import com._17od.upm.util.Util;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
 import javafx.*;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.Pane;
@@ -464,159 +473,108 @@ public class MainWindow extends Stage implements ActionListener {
 		c.weighty = 0;
 		c.gridwidth = 3;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		getContentPane().add(statusBar, c);
+		getContentPane().add(statusBar, c);*/
 
-	}*/
+	}
 
 	public void setFileChangedPanelVisible(boolean visible) {
 		databaseFileChangedPanel.setVisible(visible);
 	}
 
-	private ToolBar createToolBar() {
-
-		ToolBar toolbar = new ToolBar();
+	private ButtonBar createToolBar() {
 
 		// The "Add Account" button
 		//change to images with clickevents
 		addAccountButton = new Button();
-		addAccountButton.setTooltip(Translator.translate(ADD_ACCOUNT_TXT));
-		addAccountButton.setIcon(Util.loadImage("add_account.gif"));
-		addAccountButton.setDisabledIcon(Util.loadImage("add_account_d.gif"));
-		;
-		addAccountButton.addActionListener(this);
-		addAccountButton.setEnabled(false);
-		addAccountButton.setActionCommand(ADD_ACCOUNT_TXT);
-		toolbar.add(addAccountButton);
+		addAccountButton.setText(Translator.translate(ADD_ACCOUNT_TXT));
+		addAccountButton.setStyle("-fx-background-image: url(" +Util.loadImage("add_account.gif")+")");
+		addAccountButton.setStyle("-fx-background-image: url(" +Util.loadImage("add_account_d.gif")+")");
+		
+		//addAccountButton.setActionCommand(ADD_ACCOUNT_TXT);
+		//toolbar.getChildrenUnmodifiable().add(addAccountButton);
 
 		// The "Edit Account" button
 		editAccountButton = new Button();
-		editAccountButton.setTooltip(Translator.translate(EDIT_ACCOUNT_TXT));
-		editAccountButton.setIcon(Util.loadImage("edit_account.gif"));
-		editAccountButton.setDisabledIcon(Util.loadImage("edit_account_d.gif"));
-		;
-		editAccountButton.addActionListener(this);
-		editAccountButton.setEnabled(false);
-		editAccountButton.setActionCommand(EDIT_ACCOUNT_TXT);
-		toolbar.add(editAccountButton);
+		editAccountButton.setText(Translator.translate(EDIT_ACCOUNT_TXT));
+		editAccountButton.setStyle("-fx-background-image: url(" +Util.loadImage("edit_account.gif") +")");
+		editAccountButton.setStyle("-fx-background-image: url(" +Util.loadImage("edit_account_d.gif") + ")");
+		
 
 		// The "Delete Account" button
 		deleteAccountButton = new Button();
-		deleteAccountButton.setTooltip(Translator.translate(DELETE_ACCOUNT_TXT));
-		deleteAccountButton.setIcon(Util.loadImage("delete_account.gif"));
-		deleteAccountButton.setDisabledIcon(Util.loadImage("delete_account_d.gif"));
-		;
-		deleteAccountButton.addActionListener(this);
-		deleteAccountButton.setEnabled(false);
-		deleteAccountButton.setActionCommand(DELETE_ACCOUNT_TXT);
-		toolbar.add(deleteAccountButton);
-
+		deleteAccountButton.setText(Translator.translate(DELETE_ACCOUNT_TXT));
+		deleteAccountButton.setStyle("-fx-background-image: url(" +Util.loadImage("delete_account.gif") +")");
+		deleteAccountButton.setStyle("-fx-background-image: url(" +Util.loadImage("delete_account_d.gif")+ ")");
+		
 		//stoolbar.addSeparator();
 
 		// The "Copy Username" button
 		copyUsernameButton = new Button();
-		copyUsernameButton.setTooltip(Translator.translate(COPY_USERNAME_TXT));
-		copyUsernameButton.setIcon(Util.loadImage("copy_username.gif"));
-		copyUsernameButton.setDisabledIcon(Util.loadImage("copy_username_d.gif"));
-		;
-		copyUsernameButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				copyUsernameToClipboard();
-			}
-		});
-		copyUsernameButton.setEnabled(false);
-		toolbar.add(copyUsernameButton);
+		copyUsernameButton.setText(Translator.translate(COPY_USERNAME_TXT));
+		copyUsernameButton.setStyle("-fx-background-image: url(" +Util.loadImage("copy_username.gif") +")");
+		copyUsernameButton.setStyle("-fx-background-image: url(" +Util.loadImage("copy_username_d.gif")+ ")");
+		
 
 		// The "Copy Password" button
 		copyPasswordButton = new Button();
-		copyPasswordButton.setTooltip(Translator.translate(COPY_PASSWORD_TXT));
-		copyPasswordButton.setIcon(Util.loadImage("copy_password.gif"));
-		copyPasswordButton.setDisabledIcon(Util.loadImage("copy_password_d.gif"));
-		;
-		copyPasswordButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				copyPasswordToClipboard();
-			}
-		});
-		copyPasswordButton.setEnabled(false);
-		toolbar.add(copyPasswordButton);
+		copyPasswordButton.setText(Translator.translate(COPY_PASSWORD_TXT));
+		copyPasswordButton.setStyle("-fx-background-image: url(" +Util.loadImage("copy_password.gif") +")");
+		copyPasswordButton.setStyle("-fx-background-image: url(" +Util.loadImage("copy_password_d.gif") +")");
+		
 
 		// The "Launch URL" button
 		launchURLButton = new Button();
-		launchURLButton.setTooltip(Translator.translate(LAUNCH_URL_TXT));
-		launchURLButton.setIcon(Util.loadImage("launch_URL.gif"));
-		launchURLButton.setDisabledIcon(Util.loadImage("launch_URL_d.gif"));
-		;
-		launchURLButton.addActionListener(new ActionListener() {
+		launchURLButton.setText(Translator.translate(LAUNCH_URL_TXT));
+		launchURLButton.setStyle("-fx-background-image: url(" +Util.loadImage("launch_URL.gif") +")");
+		launchURLButton.setStyle("-fx-background-image: url(" +Util.loadImage("launch_URL_d.gif") +")");
+		
 
-			public void actionPerformed(ActionEvent e) {
-
-				AccountInformation accInfo = dbActions.getSelectedAccount();
-				String uRl = accInfo.getUrl();
-
-				// Check if the selected url is null or emty and inform the user
-				// via JoptioPane message
-				if ((uRl == null) || (uRl.length() == 0)) {
-					Pane.showMessageDialog(launchURLButton.getParent(),
-							Translator.translate("EmptyUrlJoptionpaneMsg"),
-							Translator.translate("UrlErrorJoptionpaneTitle"), Pane.WARNING_MESSAGE);
-
-					// Check if the selected url is a valid formated url(via
-					// urlIsValid() method) and inform the user via JoptioPane
-					// message
-				} else if (!(urlIsValid(uRl))) {
-					JOptionPane.showMessageDialog(launchURLButton.getParent(),
-							Translator.translate("InvalidUrlJoptionpaneMsg"),
-							Translator.translate("UrlErrorJoptionpaneTitle"), JOptionPane.WARNING_MESSAGE);
-
-					// Call the method LaunchSelectedURL() using the selected
-					// url as input
-				} else {
-					LaunchSelectedURL(uRl);
-
-				}
-			}
-		});
-		launchURLButton.setEnabled(false);
-		toolbar.add(launchURLButton);
-
-		toolbar.addSeparator();
+		Separator s = new Separator();
 
 		// The "Option" button
-		optionsButton = new JButton();
-		optionsButton.setTooltip(Translator.translate(OPTIONS_TXT));
-		optionsButton.setIcon(Util.loadImage("options.gif"));
-		optionsButton.setDisabledIcon(Util.loadImage("options_d.gif"));
-		;
-		optionsButton.addActionListener(this);
-		optionsButton.setEnabled(true);
-		optionsButton.setActionCommand(OPTIONS_TXT);
-		toolbar.add(optionsButton);
-
-		toolbar.addSeparator();
+		optionsButton = new Button();
+		optionsButton.setText(Translator.translate(OPTIONS_TXT));
+		optionsButton.setStyle("-fx-background-image: url(" +Util.loadImage("options.gif") +")");
+		optionsButton.setStyle("-fx-background-image: url(" +Util.loadImage("options_d.gif") + ")");
+		
 
 		// The Sync database button
-		syncDatabaseButton = new JButton();
-		syncDatabaseButton.setTooltip(Translator.translate(SYNC_DATABASE_TXT));
-		syncDatabaseButton.setIcon(Util.loadImage("sync.png"));
-		syncDatabaseButton.setDisabledIcon(Util.loadImage("sync_d.png"));
-		;
-		syncDatabaseButton.addActionListener(this);
-		syncDatabaseButton.setEnabled(false);
-		syncDatabaseButton.setActionCommand(SYNC_DATABASE_TXT);
-		toolbar.add(syncDatabaseButton);
+		syncDatabaseButton = new Button(Translator.translate(SYNC_DATABASE_TXT));
+		//syncDatabaseButton.setText();
+		syncDatabaseButton.setStyle("-fx-background-image: url(" +Util.loadImage("sync.png") + ")");
+		syncDatabaseButton.setStyle("-fx-background-image: url(" +Util.loadImage("sync_d.png")+ ")");
+		
 
-		return toolbar;
+		ButtonBar buttonbar = new ButtonBar();
+		ToolBar tb = new ToolBar();
+		buttonbar.setButtonData(addAccountButton, ButtonData.APPLY);
+		buttonbar.setButtonData(editAccountButton, ButtonData.APPLY);
+		buttonbar.setButtonData(deleteAccountButton, ButtonData.APPLY);
+		buttonbar.setButtonData(copyUsernameButton, ButtonData.APPLY);
+		buttonbar.setButtonData(copyPasswordButton, ButtonData.APPLY);
+		buttonbar.setButtonData(launchURLButton, ButtonData.APPLY);
+		buttonbar.setButtonData(optionsButton, ButtonData.RIGHT);
+		buttonbar.setButtonData(syncDatabaseButton, ButtonData.RIGHT);
+		buttonbar.getButtons().add(addAccountButton);
+		buttonbar.getButtons().add(editAccountButton);
+		buttonbar.getButtons().add(deleteAccountButton);
+		buttonbar.getButtons().add(copyUsernameButton);
+		buttonbar.getButtons().add(copyPasswordButton);
+		buttonbar.getButtons().add(launchURLButton);
+		buttonbar.getButtons().add(optionsButton);
+		buttonbar.getButtons().add(syncDatabaseButton);
+		return buttonbar;
 	}
 
-	private JMenuBar createMenuBar() {
+	private MenuBar createMenuBar() {
 
-		JMenuBar menuBar = new JMenuBar();
+		MenuBar menuBar = new MenuBar();
 
-		databaseMenu = new JMenu(Translator.translate("databaseMenu"));
-		databaseMenu.setMnemonic(KeyEvent.VK_D);
-		menuBar.add(databaseMenu);
-
-		newDatabaseMenuItem = new JMenuItem(Translator.translate(NEW_DATABASE_TXT), KeyEvent.VK_N);
+		databaseMenu = new Menu(Translator.translate("databaseMenu"));
+		databaseMenu.setMnemonicParsing(KeyEvent.VK_D == 68);
+		menuBar.getMenus().add(databaseMenu);
+//cntr keys entered here
+		newDatabaseMenuItem = new MenuItem(Translator.translate(NEW_DATABASE_TXT));
 		newDatabaseMenuItem.setAccelerator(
 				KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		databaseMenu.add(newDatabaseMenuItem);
@@ -678,7 +636,7 @@ public class MainWindow extends Stage implements ActionListener {
 		importMenuItem.setActionCommand(IMPORT_TXT);
 
 		accountMenu = new JMenu(Translator.translate("accountMenu"));
-		accountMenu.setMnemonic(KeyEvent.VK_A);
+		accountMenu.setMnemonicParsing(KeyEvent.VK_A);
 		menuBar.add(accountMenu);
 
 		addAccountMenuItem = new JMenuItem(Translator.translate(ADD_ACCOUNT_TXT), KeyEvent.VK_A);
@@ -804,7 +762,7 @@ public class MainWindow extends Stage implements ActionListener {
 
 	}
 
-	public JList getAccountsListview() {
+	public ListView getAccountsListview() {
 		return accountsListview;
 	}
 
@@ -876,10 +834,10 @@ public class MainWindow extends Stage implements ActionListener {
 	 * Writes current window position and size to the preferences
 	 */
 	private void storeWindowBounds() {
-		Preferences.set(Preferences.ApplicationOptions.XLOC, Integer.toString(this.getX()));
-		Preferences.set(Preferences.ApplicationOptions.YLOC, Integer.toString(this.getY()));
-		Preferences.set(Preferences.ApplicationOptions.WWIDTH, Integer.toString(this.getWidth()));
-		Preferences.set(Preferences.ApplicationOptions.WHEIGHT, Integer.toString(this.getHeight()));
+		Preferences.set(Preferences.ApplicationOptions.XLOC, Integer.toString((int) this.getX()));
+		Preferences.set(Preferences.ApplicationOptions.YLOC, Integer.toString((int)this.getY()));
+		Preferences.set(Preferences.ApplicationOptions.WWIDTH, Integer.toString((int)this.getWidth()));
+		Preferences.set(Preferences.ApplicationOptions.WHEIGHT, Integer.toString((int)this.getHeight()));
 	}
 
 	/**
@@ -888,8 +846,8 @@ public class MainWindow extends Stage implements ActionListener {
 	 * position
 	 */
 	private void restoreWindowBounds() {
-		int x = Preferences.getInt(Preferences.ApplicationOptions.XLOC, this.getX());
-		int y = Preferences.getInt(Preferences.ApplicationOptions.YLOC, this.getY());
+		int x = Preferences.getInt(Preferences.ApplicationOptions.XLOC, (int)this.getX());
+		int y = Preferences.getInt(Preferences.ApplicationOptions.YLOC, (int)this.getY());
 		// check if this position can still be displayed to avoid problems
 		// for people who dragged the window on a screen that is no longer
 		// connected.
@@ -906,10 +864,12 @@ public class MainWindow extends Stage implements ActionListener {
 	/**
 	 * Utility function for restoreWindowBounds
 	 */
-	private GraphicsConfiguration getGraphicsConfigurationContaining(int x, int y) {
+	private GraphicsContext getGraphicsConfigurationContaining(int x, int y) {
 		ArrayList configs = new ArrayList();
-		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice[] devices = env.getScreenDevices();
+		Canvas c = new Canvas();
+		c.setVisible(true);
+		GraphicsContext env = c.getGraphicsContext2D();
+		GraphicsDevice[] devices = env;
 		for (int i = 0; i < devices.length; i++) {
 			GraphicsConfiguration[] gconfigs = devices[i].getConfigurations();
 			configs.addAll(Arrays.asList(gconfigs));
