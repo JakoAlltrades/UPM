@@ -22,6 +22,8 @@ package com._17od.upm.gui.JavaFX;
 
 import javafx.*;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
@@ -35,8 +37,11 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+
+import javax.swing.event.HyperlinkEvent.EventType;
 
 import org.apache.commons.validator.routines.UrlValidator;
 
@@ -76,6 +81,22 @@ public class AccountDialog extends EscapeDialog {
 	 * include escape characters to generated passwords and the length of the
 	 * passwords is at least 3, then we will use methods in order to generate
 	 * passwords that will have at least 1 lower case + 1 upper case + 1 number.
+	 * *
+	 *float values based on the passage above:
+	 *1 lower = .25f,
+	 *1 upper = .25f,
+	 *1 number = .25f,
+	 *1 spCase = .25f
+	 *or if gen is set to 3 then
+	 *1 lower = .33f
+	 *1 upper = .33f
+	 *1 number = .33f
+	 *for user entered maybe do something similar
+	 *1 lower case = .2f
+	 *1 upper case = .2f,
+	 *1 number = .2f,
+	 *1 spCase = .2f,
+	 *length of 5 = .2f
 	 */
 	private static final char[] UPPERCASE_CHARS = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 			'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
@@ -150,13 +171,13 @@ public class AccountDialog extends EscapeDialog {
 		c.gridwidth = 1;
 		c.fill = GridBagConstraints.NONE;
 		container.add(accountLabel);
-		gbl.addLayoutComponent(accountLabel, c);
+		//gbl.addLayoutComponent((Component)accountLabel, c);
 
 		// This panel will hold the Account field and the copy and paste
 		// buttons.
-		Pane accountPanel = new Pane(new GridBagLayout());
+		Pane accountPanel = new Pane();
 
-		accountName = new TextField(new String(pAccount.getAccountName().substring(0, 20)));
+		accountName = new TextField(new String(pAccount.getAccountName()));
 		if (readOnly) {
 			accountName.setEditable(false);
 		}
@@ -167,12 +188,14 @@ public class AccountDialog extends EscapeDialog {
 		c.weightx = 1;
 		c.weighty = 1;
 		c.gridwidth = 1;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		accountPanel.add(accountName, c);
-		accountName.addFocusListener(new FocusAdapter() {
-			public void focusGained(FocusEvent e) {
+		//c.fill = GridBagConstraints.HORIZONTAL;
+		accountPanel.getChildren().add(accountName);
+		accountName.addEventHandler(EventType.ENTERED, new EventHandler(){
+
+			public void handle(Event arg0) {
 				accountName.selectAll();
 			}
+			
 		});
 
 		Button acctCopyButton = new Button();
@@ -326,15 +349,15 @@ public class AccountDialog extends EscapeDialog {
 		// paste buttons, and hide password checkbox
 		JPanel passwordPanel = new JPanel(new GridBagLayout());
 
-		password = new PasswordField(new String(pAccount.getPassword()).substring(0,20));
+		password = new PasswordField();
 		// allow CTRL-C on the password field
-		password.putClientProperty("JPasswordField.cutCopyAllowed", Boolean.TRUE);
+		//password("JPasswordField.cutCopyAllowed", Boolean.TRUE);
 		password.setEditable(!readOnly);
-		password.addFocusListener(new FocusAdapter() {
+		/*password.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
 				password.selectAll();
 			}
-		});
+		});*/
 		c.gridx = 0;
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.LINE_START;
