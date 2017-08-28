@@ -20,37 +20,30 @@
  */
 package com._17od.upm.gui.JavaFX;
 
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.border.Border;
-import javax.swing.border.EtchedBorder;
+import javax.swing.event.HyperlinkEvent.EventType;
 
 import org.apache.commons.codec.binary.Base64;
 
 import javafx.*;
+import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.Pane;
 
 import com._17od.upm.util.Preferences;
 import com._17od.upm.util.Translator;
@@ -60,113 +53,122 @@ public class OptionsDialog extends EscapeDialog {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextField dbToLoadOnStartup;
-	private JCheckBox enableProxyCheckbox;
-	private JCheckBox hideAccountPasswordCheckbox;
-	private JCheckBox inclEscCharstoPassCheckbox;
-	private JCheckBox storeWindowPosCheckbox;
-	private JCheckBox appAlwaysonTopCheckbox;
-	private JLabel accountPasswordLengthLabel;
-	private JTextField accountPasswordLength;
-	private JTextField httpProxyHost;
-	private JTextField httpProxyPort;
-	private JTextField httpProxyUsername;
-	private JPasswordField httpProxyPassword;
-	private JCheckBox hidePasswordCheckbox;
-	private JCheckBox databaseAutoLockCheckbox;
-	private JTextField databaseAutoLockTime;
-	private JCheckBox acceptSelfSignedCertsCheckbox;
-	private JLabel proxyLabel;
-	private JLabel proxyPortLabel;
-	private JLabel proxyUsernameLabel;
-	private JLabel proxyPasswordLabel;
-	private JComboBox localeComboBox;
+	private TextField dbToLoadOnStartup;
+	private CheckBox enableProxyCheckbox;
+	private CheckBox hideAccountPasswordCheckbox;
+	private CheckBox inclEscCharstoPassCheckbox;
+	private CheckBox storeWindowPosCheckbox;
+	private CheckBox appAlwaysonTopCheckbox;
+	private Label accountPasswordLengthLabel;
+	private TextField accountPasswordLength;
+	private TextField httpProxyHost;
+	private TextField httpProxyPort;
+	private TextField httpProxyUsername;
+	private PasswordField httpProxyPassword;
+	private CheckBox hidePasswordCheckbox;
+	private CheckBox databaseAutoLockCheckbox;
+	private TextField databaseAutoLockTime;
+	private CheckBox acceptSelfSignedCertsCheckbox;
+	private Label proxyLabel;
+	private Label proxyPortLabel;
+	private Label proxyUsernameLabel;
+	private Label proxyPasswordLabel;
+	private ComboBox localeComboBox;
 	private boolean okClicked = false;
-	private JFrame parentFrame;
+	private Scene parentFrame;
 	private boolean languageChanged;
 	private char defaultEchoChar;
 
-	public OptionsDialog(JFrame frame) {
+	public OptionsDialog(Scene frame) {
 		super(frame, Translator.translate("options"), true);
 
-		Container container = getContentPane();
+		//Container container = getContentPane();
 
 		// Create a pane with an empty border for spacing
-		Border emptyBorder = BorderFactory.createEmptyBorder(2, 5, 5, 5);
-		JPanel emptyBorderPanel = new JPanel();
-		emptyBorderPanel.setLayout(new BoxLayout(emptyBorderPanel, BoxLayout.Y_AXIS));
-		emptyBorderPanel.setBorder(emptyBorder);
-		container.add(emptyBorderPanel);
+		//Border emptyBorder = new Border();
+		Pane emptyBorderPanel = new Pane();
+		//emptyBorderPanel.setLayout(new BoxLayout(emptyBorderPanel, BoxLayout.Y_AXIS));
+		//emptyBorderPanel.setBorder(emptyBorder);
+		//container.add(emptyBorderPanel);
 
 		// ******************
 		// *** The DB TO Load On Startup Section
 		// ******************
 		// Create a pane with an title etched border
-		Border etchedBorder = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
-		Border etchedTitleBorder = BorderFactory.createTitledBorder(etchedBorder,
-				' ' + Translator.translate("general") + ' ');
-		JPanel mainPanel = new JPanel(new GridBagLayout());
-		mainPanel.setBorder(etchedTitleBorder);
-		emptyBorderPanel.add(mainPanel);
+		//Border etchedBorder = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+//		Border etchedTitleBorder = BorderFactory.createTitledBorder(etchedBorder,
+//				' ' + Translator.translate("general") + ' ');
+		Pane mainPanel = new Pane();
+//		mainPanel.setBorder(etchedTitleBorder);
+		emptyBorderPanel.getChildren().add(mainPanel);
 
-		GridBagConstraints c = new GridBagConstraints();
+		//GridBagConstraints c = new GridBagConstraints();
 
 		// The "Database to Load on Startup" row
-		JLabel urlLabel = new JLabel(Translator.translate("dbToLoadOnStartup"));
-		c.gridx = 0;
-		c.gridy = 0;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 5, 3, 0);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 2;
-		c.fill = GridBagConstraints.NONE;
-		mainPanel.add(urlLabel, c);
+		Label urlLabel = new Label(Translator.translate("dbToLoadOnStartup"));
+//		c.gridx = 0;
+//		c.gridy = 0;
+//		c.anchor = GridBagConstraints.LINE_START;
+//		c.insets = new Insets(0, 5, 3, 0);
+//		c.weightx = 1;
+//		c.weighty = 0;
+//		c.gridwidth = 2;
+//		c.fill = GridBagConstraints.NONE;
+		mainPanel.getChildren().add(urlLabel);
 
 		// The "Database to Load on Startup" input field row
-		dbToLoadOnStartup = new JTextField(Preferences.get(Preferences.ApplicationOptions.DB_TO_LOAD_ON_STARTUP), 25);
-		dbToLoadOnStartup.setHorizontalAlignment(JTextField.LEFT);
-		c.gridx = 0;
-		c.gridy = 1;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 5, 5, 5);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		mainPanel.add(dbToLoadOnStartup, c);
+		dbToLoadOnStartup = new TextField(Preferences.get(Preferences.ApplicationOptions.DB_TO_LOAD_ON_STARTUP));
+		//dbToLoadOnStartup.setHorizontalAlignment(JTextField.LEFT);
+//		c.gridx = 0;
+//		c.gridy = 1;
+//		c.anchor = GridBagConstraints.LINE_START;
+//		c.insets = new Insets(0, 5, 5, 5);
+//		c.weightx = 1;
+//		c.weighty = 0;
+//		c.gridwidth = 1;
+//		c.fill = GridBagConstraints.HORIZONTAL;
+		mainPanel.getChildren().add(dbToLoadOnStartup);
 
-		JButton dbToLoadOnStartupButton = new JButton("...");
-		dbToLoadOnStartupButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		Button dbToLoadOnStartupButton = new Button("...");
+		dbToLoadOnStartupButton.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler(){
+			public void handle(Event arg0) {
 				getDBToLoadOnStartup();
 			}
-		});
-		c.gridx = 1;
-		c.gridy = 1;
-		c.anchor = GridBagConstraints.LINE_END;
-		c.insets = new Insets(0, 0, 5, 5);
-		c.weightx = 0;
-		c.weighty = 0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.NONE;
-		mainPanel.add(dbToLoadOnStartupButton, c);
+        	
+        });
+//		dbToLoadOnStartupButton.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				getDBToLoadOnStartup();
+//			}
+//		});
+//		c.gridx = 1;
+//		c.gridy = 1;
+//		c.anchor = GridBagConstraints.LINE_END;
+//		c.insets = new Insets(0, 0, 5, 5);
+//		c.weightx = 0;
+//		c.weighty = 0;
+//		c.gridwidth = 1;
+//		c.fill = GridBagConstraints.NONE;
+		mainPanel.getChildren().add(dbToLoadOnStartupButton);
 
 		// The "Language" label row
-		JLabel localeLabel = new JLabel(Translator.translate("language"));
-		c.gridx = 0;
-		c.gridy = 2;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 5, 3, 0);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 2;
-		c.fill = GridBagConstraints.NONE;
-		mainPanel.add(localeLabel, c);
+		Label localeLabel = new Label(Translator.translate("language"));
+//		c.gridx = 0;
+//		c.gridy = 2;
+//		c.anchor = GridBagConstraints.LINE_START;
+//		c.insets = new Insets(0, 5, 3, 0);
+//		c.weightx = 1;
+//		c.weighty = 0;
+//		c.gridwidth = 2;
+//		c.fill = GridBagConstraints.NONE;
+		mainPanel.getChildren().add(localeLabel);
 
 		// The "Locale" field row
-		localeComboBox = new JComboBox(getSupportedLocaleNames());
-		for (int i = 0; i < localeComboBox.getItemCount(); i++) {
+		Object[] object= getSupportedLocaleNames();
+		ObservableList list;
+		list.addAll(object);
+		localeComboBox = new ComboBox(list);
+		for (int i = 0; i < localeComboBox.getItems().size(); i++) {
 			// If the locale language is blank then set it to the English
 			// language
 			// I'm not sure why this happens. Maybe it's because the default
@@ -178,107 +180,109 @@ public class OptionsDialog extends EscapeDialog {
 			}
 
 			if (currentLanguage.equals(Translator.SUPPORTED_LOCALES[i].getLanguage())) {
-				localeComboBox.setSelectedIndex(i);
+//				localeComboBox.
+//				localeComboBox.setSelectedIndex(i);
 				break;
 			}
 		}
-		c.gridx = 0;
-		c.gridy = 3;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 5, 8, 5);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 2;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		mainPanel.add(localeComboBox, c);
+//		c.gridx = 0;
+//		c.gridy = 3;
+//		c.anchor = GridBagConstraints.LINE_START;
+//		c.insets = new Insets(0, 5, 8, 5);
+//		c.weightx = 1;
+//		c.weighty = 0;
+//		c.gridwidth = 2;
+//		c.fill = GridBagConstraints.HORIZONTAL;
+		mainPanel.getChildren().add(localeComboBox);
 
 		// The "Hide account password" row
 		Boolean hideAccountPassword = new Boolean(
 				Preferences.get(Preferences.ApplicationOptions.ACCOUNT_HIDE_PASSWORD, "true"));
-		hideAccountPasswordCheckbox = new JCheckBox(Translator.translate("hideAccountPassword"),
-				hideAccountPassword.booleanValue());
-		c.gridx = 0;
-		c.gridy = 4;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 2, 5, 0);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.NONE;
-		mainPanel.add(hideAccountPasswordCheckbox, c);
+		hideAccountPasswordCheckbox = new CheckBox(Translator.translate("hideAccountPassword"));
+//		c.gridx = 0;
+//		c.gridy = 4;
+//		c.anchor = GridBagConstraints.LINE_START;
+//		c.insets = new Insets(0, 2, 5, 0);
+//		c.weightx = 1;
+//		c.weighty = 0;
+//		c.gridwidth = 1;
+//		c.fill = GridBagConstraints.NONE;
+		mainPanel.getChildren().add(hideAccountPasswordCheckbox);
 
 		// The "Database auto lock" row
 		Boolean databaseAutoLock = new Boolean(
 				Preferences.get(Preferences.ApplicationOptions.DATABASE_AUTO_LOCK, "false"));
-		databaseAutoLockCheckbox = new JCheckBox(Translator.translate("databaseAutoLock"),
-				databaseAutoLock.booleanValue());
-		c.gridx = 0;
-		c.gridy = 5;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 2, 5, 0);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.NONE;
-		mainPanel.add(databaseAutoLockCheckbox, c);
-		databaseAutoLockCheckbox.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				databaseAutoLockTime.setEnabled(e.getStateChange() == ItemEvent.SELECTED);
-			}
-		});
+		databaseAutoLockCheckbox = new CheckBox(Translator.translate("databaseAutoLock"));
+//		c.gridx = 0;
+//		c.gridy = 5;
+//		c.anchor = GridBagConstraints.LINE_START;
+//		c.insets = new Insets(0, 2, 5, 0);
+//		c.weightx = 1;
+//		c.weighty = 0;
+//		c.gridwidth = 1;
+//		c.fill = GridBagConstraints.NONE;
+		mainPanel.getChildren().add(databaseAutoLockCheckbox);
+//		databaseAutoLockCheckbox.addEventHandler(EventType.ACTIVATED, new EventHandler(){
+//			public void handle(Event arg0) {
+				getDBToLoadOnStartup();
+//			}
+//        	
+//        });
+//		databaseAutoLockCheckbox.addItemListener(new ItemListener() {
+//			public void itemStateChanged(ItemEvent e) {
+//				databaseAutoLockTime.setEnabled(e.getStateChange() == ItemEvent.SELECTED);
+//			}
+//		});
 
 		// The "Database auto lock" field row
-		databaseAutoLockTime = new JTextField(Preferences.get(Preferences.ApplicationOptions.DATABASE_AUTO_LOCK_TIME),
-				5);
-		c.gridx = 1;
-		c.gridy = 5;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 5, 5, 0);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		mainPanel.add(databaseAutoLockTime, c);
-		databaseAutoLockTime.setEnabled(databaseAutoLockCheckbox.isSelected());
+		databaseAutoLockTime = new TextField(Preferences.get(Preferences.ApplicationOptions.DATABASE_AUTO_LOCK_TIME));
+//		c.gridx = 1;
+//		c.gridy = 5;
+//		c.anchor = GridBagConstraints.LINE_START;
+//		c.insets = new Insets(0, 5, 5, 0);
+//		c.weightx = 1;
+//		c.weighty = 0;
+//		c.gridwidth = 1;
+//		c.fill = GridBagConstraints.HORIZONTAL;
+		mainPanel.getChildren().add(databaseAutoLockTime);
+		//databaseAutoLockTime.setEnabled(databaseAutoLockCheckbox.isSelected());
 
 		// The "Generated password length" row
-		accountPasswordLengthLabel = new JLabel(Translator.translate("generatedPasswodLength"));
-		c.gridx = 0;
-		c.gridy = 6;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 2, 5, 0);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.NONE;
-		mainPanel.add(accountPasswordLengthLabel, c);
+		accountPasswordLengthLabel = new Label(Translator.translate("generatedPasswodLength"));
+//		c.gridx = 0;
+//		c.gridy = 6;
+//		c.anchor = GridBagConstraints.LINE_START;
+//		c.insets = new Insets(0, 2, 5, 0);
+//		c.weightx = 1;
+//		c.weighty = 0;
+//		c.gridwidth = 1;
+//		c.fill = GridBagConstraints.NONE;
+		mainPanel.getChildren().add(accountPasswordLengthLabel);
 
-		accountPasswordLength = new JTextField(
-				Preferences.get(Preferences.ApplicationOptions.ACCOUNT_PASSWORD_LENGTH, "8"), 5);
-		c.gridx = 1;
-		c.gridy = 6;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 5, 5, 0);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		mainPanel.add(accountPasswordLength, c);
+		accountPasswordLength = new TextField(Preferences.get(Preferences.ApplicationOptions.ACCOUNT_PASSWORD_LENGTH, "8"));
+//		c.gridx = 1;
+//		c.gridy = 6;
+//		c.anchor = GridBagConstraints.LINE_START;
+//		c.insets = new Insets(0, 5, 5, 0);
+//		c.weightx = 1;
+//		c.weighty = 0;
+//		c.gridwidth = 1;
+//		c.fill = GridBagConstraints.HORIZONTAL;
+		mainPanel.getChildren().add(accountPasswordLength, c);
 
 		// The "Include Escape Characters to Generated Passwords" row
 		Boolean inclEscCharstoPass = new Boolean(
 				Preferences.get(Preferences.ApplicationOptions.INCLUDE_ESCAPE_CHARACTERS, "true"));
-		inclEscCharstoPassCheckbox = new JCheckBox((Translator.translate("includePunctuationCharacters")),
-				inclEscCharstoPass.booleanValue());
-		c.gridx = 0;
-		c.gridy = 7;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 2, 5, 0);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.NONE;
-		mainPanel.add(inclEscCharstoPassCheckbox, c);
+		inclEscCharstoPassCheckbox = new CheckBox((Translator.translate("includePunctuationCharacters")));
+//		c.gridx = 0;
+//		c.gridy = 7;
+//		c.anchor = GridBagConstraints.LINE_START;
+//		c.insets = new Insets(0, 2, 5, 0);
+//		c.weightx = 1;
+//		c.weighty = 0;
+//		c.gridwidth = 1;
+//		c.fill = GridBagConstraints.NONE;
+		mainPanel.getChildren().add(inclEscCharstoPassCheckbox);
 
 		// The "Store Window position" row
 		Boolean storeWindowPos = Boolean
