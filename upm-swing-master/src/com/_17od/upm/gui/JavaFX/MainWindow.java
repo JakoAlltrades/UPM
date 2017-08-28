@@ -705,7 +705,9 @@ public class MainWindow extends Stage implements ActionListener {
 				// Check if the selected url is null or emty and inform the user
 				// via JoptioPane message
 				if ((uRl == null) || (uRl.length() == 0)) {
-					
+					Menu.showMessageDialog(accountMenu.getParentMenu().getParent(),
+							Translator.translate("EmptyUrlJoptionpaneMsg"),
+							Translator.translate("UrlErrorJoptionpaneTitle"), JOptionPane.WARNING_MESSAGE);
 
 					// Check if the selected url is a valid formated url(via
 					// urlIsValid() method) and inform the user via JoptioPane
@@ -713,7 +715,7 @@ public class MainWindow extends Stage implements ActionListener {
 				} else if (!(urlIsValid(uRl))) {
 					Menu.showMessageDialog(accountMenu.getParent().getParent(),
 							Translator.translate("InvalidUrlJoptionpaneMsg"),
-							Translator.translate("UrlErrorJoptionpaneTitle"));
+							Translator.translate("UrlErrorJoptionpaneTitle"), JOptionPane.WARNING_MESSAGE);
 
 					// Call the method LaunchSelectedURL() using the selected
 					// url as input
