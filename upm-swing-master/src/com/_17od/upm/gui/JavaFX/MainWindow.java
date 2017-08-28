@@ -46,6 +46,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.security.GeneralSecurityException;
 import javax.crypto.IllegalBlockSizeException;
+import javax.swing.KeyStroke;
 
 import org.apache.commons.validator.routines.UrlValidator;
 import com._17od.upm.crypto.InvalidPasswordException;
@@ -62,6 +63,7 @@ import java.util.List;
 import javafx.*;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
@@ -76,6 +78,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -251,12 +254,12 @@ public class MainWindow extends Stage implements ActionListener {
 
 		
 		// Ensure the layout manager is a BorderLayout
-		/*if (!(getContentPane().getLayout() instanceof GridBagLayout)) {
+		if (!(getContentPane().getLayout() instanceof GridBagLayout)) {
 			getContentPane().setLayout(new GridBagLayout());
 		}
 
 		// Create the menubar
-		setMenuBar(createMenuBar());
+		MenuBar mb = createMenuBar();
 
 		GridBagConstraints c = new GridBagConstraints();
 
@@ -269,7 +272,7 @@ public class MainWindow extends Stage implements ActionListener {
 		c.weighty = 0;
 		c.gridwidth = 3;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		Component toolbar = createToolBar();
+		ToolBar toolbar = createToolBar();
 		getContentPane().add(toolbar, c);
 
 		// Keep the frame background color consistent
@@ -475,7 +478,7 @@ public class MainWindow extends Stage implements ActionListener {
 		c.weighty = 0;
 		c.gridwidth = 3;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		getContentPane().add(statusBar, c);*/
+		getContentPane().add(statusBar, c);
 
 	}
 
@@ -483,7 +486,7 @@ public class MainWindow extends Stage implements ActionListener {
 		databaseFileChangedPanel.setVisible(visible);
 	}
 
-	private ButtonBar createToolBar() {
+	private ToolBar createToolBar() {
 
 		// The "Add Account" button
 		//change to images with clickevents
@@ -546,26 +549,9 @@ public class MainWindow extends Stage implements ActionListener {
 		syncDatabaseButton.setStyle("-fx-background-image: url(" +Util.loadImage("sync.png") + ")");
 		syncDatabaseButton.setStyle("-fx-background-image: url(" +Util.loadImage("sync_d.png")+ ")");
 		
-
-		ButtonBar buttonbar = new ButtonBar();
-		ToolBar tb = new ToolBar();
-		buttonbar.setButtonData(addAccountButton, ButtonData.APPLY);
-		buttonbar.setButtonData(editAccountButton, ButtonData.APPLY);
-		buttonbar.setButtonData(deleteAccountButton, ButtonData.APPLY);
-		buttonbar.setButtonData(copyUsernameButton, ButtonData.APPLY);
-		buttonbar.setButtonData(copyPasswordButton, ButtonData.APPLY);
-		buttonbar.setButtonData(launchURLButton, ButtonData.APPLY);
-		buttonbar.setButtonData(optionsButton, ButtonData.RIGHT);
-		buttonbar.setButtonData(syncDatabaseButton, ButtonData.RIGHT);
-		buttonbar.getButtons().add(addAccountButton);
-		buttonbar.getButtons().add(editAccountButton);
-		buttonbar.getButtons().add(deleteAccountButton);
-		buttonbar.getButtons().add(copyUsernameButton);
-		buttonbar.getButtons().add(copyPasswordButton);
-		buttonbar.getButtons().add(launchURLButton);
-		buttonbar.getButtons().add(optionsButton);
-		buttonbar.getButtons().add(syncDatabaseButton);
-		return buttonbar;
+		Button[] buttons = {addAccountButton, editAccountButton, deleteAccountButton, copyUsernameButton, copyPasswordButton, launchURLButton};
+		ToolBar tb = new ToolBar(buttons);
+		return tb;
 	}
 
 	private MenuBar createMenuBar() {
@@ -576,11 +562,18 @@ public class MainWindow extends Stage implements ActionListener {
 		databaseMenu.setMnemonicParsing(KeyEvent.VK_D == 68);
 		menuBar.getMenus().add(databaseMenu);
 //cntr keys entered here
+		KeyCombination kc;
 		newDatabaseMenuItem = new MenuItem(Translator.translate(NEW_DATABASE_TXT));
-		newDatabaseMenuItem.setAccelerator(
-				KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		databaseMenu.add(newDatabaseMenuItem);
-		newDatabaseMenuItem.addActionListener(this);
+		newDatabaseMenuItem.setAccelerator(kc.keyCombination("N ctrl"));
+		databaseMenu.getItems().add(newDatabaseMenuItem);
+		newDatabaseMenuItem.setOnAction(new EventHandler(){
+
+			public void handle(Event e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 		newDatabaseMenuItem.setActionCommand(NEW_DATABASE_TXT);
 
 		openDatabaseMenuItem = new JMenuItem(Translator.translate(OPEN_DATABASE_TXT), KeyEvent.VK_O);
@@ -712,17 +705,15 @@ public class MainWindow extends Stage implements ActionListener {
 				// Check if the selected url is null or emty and inform the user
 				// via JoptioPane message
 				if ((uRl == null) || (uRl.length() == 0)) {
-					JOptionPane.showMessageDialog(accountMenu.getParent().getParent(),
-							Translator.translate("EmptyUrlJoptionpaneMsg"),
-							Translator.translate("UrlErrorJoptionpaneTitle"), JOptionPane.WARNING_MESSAGE);
+					
 
 					// Check if the selected url is a valid formated url(via
 					// urlIsValid() method) and inform the user via JoptioPane
 					// message
 				} else if (!(urlIsValid(uRl))) {
-					JOptionPane.showMessageDialog(accountMenu.getParent().getParent(),
+					Menu.showMessageDialog(accountMenu.getParent().getParent(),
 							Translator.translate("InvalidUrlJoptionpaneMsg"),
-							Translator.translate("UrlErrorJoptionpaneTitle"), JOptionPane.WARNING_MESSAGE);
+							Translator.translate("UrlErrorJoptionpaneTitle"));
 
 					// Call the method LaunchSelectedURL() using the selected
 					// url as input
@@ -854,13 +845,17 @@ public class MainWindow extends Stage implements ActionListener {
 		// for people who dragged the window on a screen that is no longer
 		// connected.
 		if (getGraphicsConfigurationContaining(x, y) == null) {
-			x = this.getX();
-			y = this.getY();
+			x = (int) this.getX();
+			y = (int) this.getY();
 		}
-		int width = Preferences.getInt(Preferences.ApplicationOptions.WWIDTH, (this.getWidth()));
-		int height = Preferences.getInt(Preferences.ApplicationOptions.WHEIGHT, this.getHeight());
+		int width = Preferences.getInt(Preferences.ApplicationOptions.WWIDTH, (int)(this.getWidth()));
+		int height = Preferences.getInt(Preferences.ApplicationOptions.WHEIGHT,  (int)this.getHeight());
 
-		this.setBounds(x, y, width, height);
+		//this.setBounds(x, y, width, height);
+		this.setX(x);
+		this.setY(y);
+		this.setHeight(height);
+		this.setWidth(width);
 	}
 
 	/**
@@ -871,7 +866,7 @@ public class MainWindow extends Stage implements ActionListener {
 		Canvas c = new Canvas();
 		c.setVisible(true);
 		GraphicsContext env = c.getGraphicsContext2D();
-		GraphicsDevice[] devices = env;
+		GraphicsDevice[] devices = env.;
 		for (int i = 0; i < devices.length; i++) {
 			GraphicsConfiguration[] gconfigs = devices[i].getConfigurations();
 			configs.addAll(Arrays.asList(gconfigs));
