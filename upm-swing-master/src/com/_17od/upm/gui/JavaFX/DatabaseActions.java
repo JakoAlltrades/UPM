@@ -128,7 +128,9 @@ public class DatabaseActions {
 //                return;
 //            }
             if (pane.getChildren().get(1).equals((pane.getChildren().get(0).toString()))) {
-                if (!Arrays.equals(masterPassword.getText(), confirmedMasterPassword.getText())) {
+            	String mastPass = masterPassword.getText();
+            	String confirmedPass = confirmedMasterPassword.getText();
+                if (!Arrays.equals(mastPass.toCharArray(), confirmedPass.toCharArray())) {
                     dial.setContentText(Translator.translate("passwordsDontMatch"));
                     dial.show();
                 } else {
