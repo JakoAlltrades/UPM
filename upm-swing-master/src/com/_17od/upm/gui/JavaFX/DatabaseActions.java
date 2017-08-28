@@ -130,7 +130,7 @@ public class DatabaseActions {
             if (pane.getChildren().get(1).equals((pane.getChildren().get(0).toString()))) {
             	String mastPass = masterPassword.getText();
             	String confirmedPass = confirmedMasterPassword.getText();
-                if (!Arrays.equals(mastPass.toCharArray(), confirmedPass.toCharArray())) {
+                if (!Arrays.equal(mastPass.toCharArray(), confirmedPass.toCharArray())) {
                     dial.setContentText(Translator.translate("passwordsDontMatch"));
                     dial.show();
                 } else {
@@ -147,7 +147,8 @@ public class DatabaseActions {
         }
 
         database = new PasswordDatabase(newDatabaseFile);
-        dbPers = new PasswordDatabasePersistence(masterPassword.getPassword());
+        //dbPers = new PasswordDatabasePersistence();
+        dbPers = new PasswordDatabasePersistence(masterPassword.getText().toCharArray());
         saveDatabase();
         accountNames = new ArrayList();
         doOpenDatabaseActions();
@@ -156,7 +157,7 @@ public class DatabaseActions {
         // user if they'd like to open this database on startup.
         if (Preferences.get(Preferences.ApplicationOptions.DB_TO_LOAD_ON_STARTUP) == null ||
                 Preferences.get(Preferences.ApplicationOptions.DB_TO_LOAD_ON_STARTUP).equals("")) {
-            int option = JOptionPane.showConfirmDialog(mainWindow,
+            int option = OptionPane.showConfirmDialog(mainWindow,
                     Translator.translate("setNewLoadOnStartupDatabase"),
                     Translator.translate("newPasswordDatabase"),
                     JOptionPane.YES_NO_OPTION);
