@@ -21,7 +21,9 @@
 package com._17od.upm.gui.JavaFX;
 
 import java.awt.Desktop;
+import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -898,75 +900,75 @@ public class MainWindow extends Stage implements ActionListener {
 		return result;
 	}
 
-	public JButton getCopyPasswordButton() {
+	public Button getCopyPasswordButton() {
 		return copyPasswordButton;
 	}
 
-	public JButton getLaunchURLButton() {
+	public Button getLaunchURLButton() {
 		return launchURLButton;
 	}
 
-	public JButton getCopyUsernameButton() {
+	public Button getCopyUsernameButton() {
 		return copyUsernameButton;
 	}
 
-	public JButton getEditAccountButton() {
+	public Button getEditAccountButton() {
 		return editAccountButton;
 	}
 
-	public JButton getAddAccountButton() {
+	public Button getAddAccountButton() {
 		return addAccountButton;
 	}
 
-	public JButton getOptionsButton() {
+	public Button getOptionsButton() {
 		return optionsButton;
 	}
 
-	public JButton getDeleteAccountButton() {
+	public Button getDeleteAccountButton() {
 		return deleteAccountButton;
 	}
 
-	public JTextField getSearchField() {
+	public TextField getSearchField() {
 		return searchField;
 	}
 
-	public JLabel getSearchIcon() {
+	public Label getSearchIcon() {
 		return searchIcon;
 	}
 
-	public JButton getResetSearchButton() {
+	public Button getResetSearchButton() {
 		return resetSearchButton;
 	}
 
-	public JMenuItem getAboutMenuItem() {
+	public MenuItem getAboutMenuItem() {
 		return aboutMenuItem;
 	}
 
-	public JMenuItem getExitMenuItem() {
+	public MenuItem getExitMenuItem() {
 		return exitMenuItem;
 	}
 
-	public JMenuItem getCopyPasswordMenuItem() {
+	public MenuItem getCopyPasswordMenuItem() {
 		return copyPasswordMenuItem;
 	}
 
-	public JMenuItem getLaunchURLMenuItem() {
+	public MenuItem getLaunchURLMenuItem() {
 		return launchURLMenuItem;
 	}
 
-	public JMenuItem getCopyUsernameMenuItem() {
+	public MenuItem getCopyUsernameMenuItem() {
 		return copyUsernameMenuItem;
 	}
 
-	public JMenuItem getDeleteAccountMenuItem() {
+	public MenuItem getDeleteAccountMenuItem() {
 		return deleteAccountMenuItem;
 	}
 
-	public JMenuItem getViewAccountMenuItem() {
+	public MenuItem getViewAccountMenuItem() {
 		return viewAccountMenuItem;
 	}
 
-	public JMenuItem getEditAccountMenuItem() {
+	public MenuItem getEditAccountMenuItem() {
 		return editAccountMenuItem;
 	}
 
@@ -974,15 +976,15 @@ public class MainWindow extends Stage implements ActionListener {
 		return applicationName;
 	}
 
-	public JMenuItem getAddAccountMenuItem() {
+	public MenuItem getAddAccountMenuItem() {
 		return addAccountMenuItem;
 	}
 
-	public JMenuItem getChangeMasterPasswordMenuItem() {
+	public MenuItem getChangeMasterPasswordMenuItem() {
 		return changeMasterPasswordMenuItem;
 	}
 
-	public JMenuItem getDatabasePropertiesMenuItem() {
+	public MenuItem getDatabasePropertiesMenuItem() {
 		return databasePropertiesMenuItem;
 	}
 
@@ -1028,27 +1030,27 @@ public class MainWindow extends Stage implements ActionListener {
 		}
 	}
 
-	public JButton getSyncWithRemoteDatabaseButton() {
+	public Button getSyncWithRemoteDatabaseButton() {
 		return syncDatabaseButton;
 	}
 
-	public JMenuItem getSyncWithRemoteDatabaseMenuItem() {
+	public MenuItem getSyncWithRemoteDatabaseMenuItem() {
 		return syncWithRemoteDatabaseMenuItem;
 	}
 
-	public JMenuItem getExportMenuItem() {
+	public MenuItem getExportMenuItem() {
 		return exportMenuItem;
 	}
 
-	public JMenuItem getImportMenuItem() {
+	public MenuItem getImportMenuItem() {
 		return importMenuItem;
 	}
 
-	public JLabel getStatusBar() {
+	public Label getStatusBar() {
 		return statusBar;
 	}
 
-	public JPanel getDatabaseFileChangedPanel() {
+	public Pane getDatabaseFileChangedPanel() {
 		return databaseFileChangedPanel;
 	}
 
@@ -1084,15 +1086,15 @@ public class MainWindow extends Stage implements ActionListener {
 			helpMenu.setText(Translator.translate("helpMenu"));
 		}
 
-		addAccountButton.setTooltip(Translator.translate(ADD_ACCOUNT_TXT));
-		editAccountButton.setToolTipText(Translator.translate(EDIT_ACCOUNT_TXT));
-		deleteAccountButton.setToolTipText(Translator.translate(DELETE_ACCOUNT_TXT));
-		copyUsernameButton.setToolTipText(Translator.translate(COPY_USERNAME_TXT));
-		copyPasswordButton.setToolTipText(Translator.translate(COPY_PASSWORD_TXT));
-		launchURLButton.setToolTipText(Translator.translate(LAUNCH_URL_TXT));
-		optionsButton.setToolTipText(Translator.translate(OPTIONS_TXT));
-		syncDatabaseButton.setToolTipText(Translator.translate(SYNC_DATABASE_TXT));
-		resetSearchButton.setToolTipText(Translator.translate(RESET_SEARCH_TXT));
+		addAccountButton.setText(Translator.translate(ADD_ACCOUNT_TXT));
+		editAccountButton.setText(Translator.translate(EDIT_ACCOUNT_TXT));
+		deleteAccountButton.setText(Translator.translate(DELETE_ACCOUNT_TXT));
+		copyUsernameButton.setText(Translator.translate(COPY_USERNAME_TXT));
+		copyPasswordButton.setText(Translator.translate(COPY_PASSWORD_TXT));
+		launchURLButton.setText(Translator.translate(LAUNCH_URL_TXT));
+		optionsButton.setText(Translator.translate(OPTIONS_TXT));
+		syncDatabaseButton.setText(Translator.translate(SYNC_DATABASE_TXT));
+		resetSearchButton.setText(Translator.translate(RESET_SEARCH_TXT));
 	}
 
 	public interface ChangeDatabaseAction {

@@ -199,8 +199,8 @@ public class AccountDialog extends EscapeDialog {
 		});
 
 		Button acctCopyButton = new Button();
-		acctCopyButton.setIcon(Util.loadImage("copy-icon.png"));
-		acctCopyButton.setToolTipText("Copy");
+		acctCopyButton.(Util.loadImage("copy-icon.png"));
+		acctCopyButton.setText("Copy");
 		acctCopyButton.setEnabled(true);
 		acctCopyButton.setMargin(new Insets(0, 0, 0, 0));
 		acctCopyButton.addActionListener(new ActionListener() {
