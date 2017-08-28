@@ -20,25 +20,20 @@
  */
 package com._17od.upm.gui.JavaFX;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
-import javax.swing.Timer;
 import javafx.*;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.PasswordField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -99,24 +94,43 @@ public class DatabaseActions {
             return;
         }
 
-        final JPasswordField masterPassword = new JPasswordField("");
+        final PasswordField masterPassword = new PasswordField();
         boolean passwordsMatch = false;
         do {
 
             //Get a new master password for this database from the user
-            JPasswordField confirmedMasterPassword = new JPasswordField("");
-            JOptionPane pane = new JOptionPane(new Object[] {Translator.translate("enterMasterPassword"), masterPassword, Translator.translate("confirmation"), confirmedMasterPassword}, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
-            JDialog dialog = pane.createDialog(mainWindow, Translator.translate("masterPassword"));
-            dialog.addWindowFocusListener(new WindowAdapter() {
-                public void windowGainedFocus(WindowEvent e) {
-                    masterPassword.requestFocusInWindow();
-                }
-            });
-            dialog.show();
+            PasswordField confirmedMasterPassword = new PasswordField();
+            Pane pane = new Pane((Node[]) new Object[] {Translator.translate("enterMasterPassword"), masterPassword, Translator.translate("confirmation"), confirmedMasterPassword});
+           // JDialog dialog = pane.getChildren().add(mainWindow, Translator.translate("masterPassword"));
+            //some kind of pass of the main window
+            // probably not necessary in javafx
+            //looks like: mainWindow instance above , global
+            Dialog dial = new Dialog();
+            dial.setContentText(Translator.translate("masterPassword"));
+            pane.getChildren().add(dial);
+//            dial.addWindowFocusListener(new WindowAdapter() {
+//                public void windowGainedFocus(WindowEvent e) {
+//                    masterPassword.requestFocusInWindow();
+//                }
+//            });
+            //dial.
+            //just gives focus dont worry about it
+            //dialog.show();
+            dial.show();
 
-            if (pane.getValue().equals(new Integer(JOptionPane.OK_OPTION))) {
-                if (!Arrays.equals(masterPassword.getPassword(), confirmedMasterPassword.getPassword())) {
-                    JOptionPane.showMessageDialog(mainWindow, Translator.translate("passwordsDontMatch"));
+//            if (pane.getValue().equals(new Integer(JOptionPane.OK_OPTION))) {
+//                if (!Arrays.equals(masterPassword.getPassword(), confirmedMasterPassword.getPassword())) {
+//                    JOptionPane.showMessageDialog(mainWindow, Translator.translate("passwordsDontMatch"));
+//                } else {
+//                    passwordsMatch = true;
+//                }
+//            } else {
+//                return;
+//            }
+            if (pane.getChildren().get(1).equals((pane.getChildren().get(0).toString()))) {
+                if (!Arrays.equals(masterPassword.getText(), confirmedMasterPassword.getText())) {
+                    dial.setContentText(Translator.translate("passwordsDontMatch"));
+                    dial.show();
                 } else {
                     passwordsMatch = true;
                 }
