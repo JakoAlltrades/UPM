@@ -35,6 +35,7 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -44,6 +45,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import com._17od.upm.util.Preferences;
 import com._17od.upm.util.Translator;
@@ -78,6 +81,7 @@ public class OptionsDialog extends EscapeDialog {
 	private Scene parentFrame;
 	private boolean languageChanged;
 	private char defaultEchoChar;
+	private int locale;
 
 	public OptionsDialog(Scene frame) {
 		super(frame, Translator.translate("options"), true);
@@ -165,7 +169,7 @@ public class OptionsDialog extends EscapeDialog {
 
 		// The "Locale" field row
 		Object[] object= getSupportedLocaleNames();
-		ObservableList list;
+		ObservableList list = null;
 		list.addAll(object);
 		localeComboBox = new ComboBox(list);
 		for (int i = 0; i < localeComboBox.getItems().size(); i++) {
@@ -182,6 +186,7 @@ public class OptionsDialog extends EscapeDialog {
 			if (currentLanguage.equals(Translator.SUPPORTED_LOCALES[i].getLanguage())) {
 //				localeComboBox.
 //				localeComboBox.setSelectedIndex(i);
+				locale = i;
 				break;
 			}
 		}
@@ -351,15 +356,13 @@ public class OptionsDialog extends EscapeDialog {
 		// The "Enable Proxy" row
 		Boolean proxyEnabled = new Boolean(Preferences.get(Preferences.ApplicationOptions.HTTP_PROXY_ENABLED));
 		enableProxyCheckbox = new CheckBox(Translator.translate("enableProxy"));
-		enableProxyCheckbox.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					enableProxyComponents(true);
-				} else {
-					enableProxyComponents(false);
-				}
+		enableProxyCheckbox.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler(){
+
+			public void handle(Event arg0) {
+				enableProxyComponents(true);
 			}
 		});
+	
 //		c.gridx = 0;
 //		c.gridy = 0;
 //		c.anchor = GridBagConstraints.LINE_START;
@@ -459,7 +462,8 @@ public class OptionsDialog extends EscapeDialog {
 		if (encodedPassword != null) {
 			decodedPassword = new String(Base64.decodeBase64(encodedPassword.getBytes()));
 		}
-		httpProxyPassword = new PasswordField(decodedPassword);
+		httpProxyPassword = new PasswordField();
+		httpProxyPassword.appendText(decodedPassword);
 //		c.gridx = 0;
 //		c.gridy = 6;
 //		c.anchor = GridBagConstraints.LINE_START;
@@ -468,67 +472,70 @@ public class OptionsDialog extends EscapeDialog {
 //		c.weighty = 0;
 //		c.gridwidth = 1;
 		//c.fill = GridBagConstraints.HORIZONTAL;
-		proxyPanel.add(httpProxyPassword, c);
+		proxyPanel.getChildren().add(httpProxyPassword );
 
-		hidePasswordCheckbox = new JCheckBox(Translator.translate("hide"), true);
-		defaultEchoChar = httpProxyPassword.getEchoChar();
-		hidePasswordCheckbox.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					httpProxyPassword.setEchoChar(defaultEchoChar);
-				} else {
-					httpProxyPassword.setEchoChar((char) 0);
-				}
-			}
-		});
-		c.gridx = 1;
-		c.gridy = 6;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.insets = new Insets(0, 5, 5, 0);
-		c.weightx = 0;
-		c.weighty = 0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.NONE;
-		proxyPanel.add(hidePasswordCheckbox, c);
+		hidePasswordCheckbox = new CheckBox(Translator.translate("hide"));
+		defaultEchoChar = httpProxyPassword.getCharacters().charAt(0);
+//		hidePasswordCheckbox.addItemListener(new ItemListener() {
+//			public void itemStateChanged(ItemEvent e) {
+//				if (e.getStateChange() == ItemEvent.SELECTED) {
+//					httpProxyPassword.setEchoChar(defaultEchoChar);
+//				} else {
+//					httpProxyPassword.setEchoChar((char) 0);
+//				}
+//			}
+//		});
+//		c.gridx = 1;
+//		c.gridy = 6;
+//		c.anchor = GridBagConstraints.LINE_START;
+//		c.insets = new Insets(0, 5, 5, 0);
+//		c.weightx = 0;
+//		c.weighty = 0;
+//		c.gridwidth = 1;
+//		c.fill = GridBagConstraints.NONE;
+		proxyPanel.getChildren().add(hidePasswordCheckbox);
 
 		// Some spacing
-		emptyBorderPanel.add(Box.createVerticalGlue());
+		//emptyBorderPanel.add(Box.createVerticalGlue());
 
 		// The buttons row
-		JPanel buttonPanel = new JPanel(new FlowLayout());
-		emptyBorderPanel.add(buttonPanel);
-		JButton okButton = new JButton(Translator.translate("ok"));
+		Pane buttonPanel = new Pane();
+		emptyBorderPanel.getChildren().add(buttonPanel);
+		Button okButton = new Button(Translator.translate("ok"));
 		// Link Enter key to okButton
-		getRootPane().setDefaultButton(okButton);
-		okButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		//getRootPane().setDefaultButton(okButton);
+		okButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler(){
+
+			public void handle(Event arg0) {
 				okButtonAction();
 			}
 		});
-		buttonPanel.add(okButton);
+		
+		buttonPanel.getChildren().add(okButton);
 
-		JButton cancelButton = new JButton(Translator.translate("cancel"));
-		cancelButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-				dispose();
+		Button cancelButton = new Button(Translator.translate("cancel"));
+		cancelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler(){
+
+			public void handle(Event arg0) {
+				//maybey close here
 			}
 		});
-		buttonPanel.add(cancelButton);
+		
+		buttonPanel.getChildren().add(cancelButton);
 
 		enableProxyComponents(proxyEnabled.booleanValue());
 	}
 
 	private void enableProxyComponents(boolean enable) {
-		httpProxyHost.setEnabled(enable);
-		httpProxyPort.setEnabled(enable);
-		httpProxyUsername.setEnabled(enable);
-		httpProxyPassword.setEnabled(enable);
-		proxyLabel.setEnabled(enable);
-		proxyPortLabel.setEnabled(enable);
-		proxyUsernameLabel.setEnabled(enable);
-		proxyPasswordLabel.setEnabled(enable);
-		hidePasswordCheckbox.setEnabled(enable);
+//		httpProxyHost.setEnabled(enable);
+//		httpProxyPort.setEnabled(enable);
+//		httpProxyUsername.setEnabled(enable);
+//		httpProxyPassword.setEnabled(enable);
+//		proxyLabel.setEnabled(enable);
+//		proxyPortLabel.setEnabled(enable);
+//		proxyUsernameLabel.setEnabled(enable);
+//		proxyPasswordLabel.setEnabled(enable);
+//		hidePasswordCheckbox.setEnabled(enable);
 	}
 
 	public boolean okClicked() {
@@ -540,20 +547,24 @@ public class OptionsDialog extends EscapeDialog {
 			if (databaseAutoLockCheckbox.isSelected()) {
 				if (databaseAutoLockTime.getText() == null || databaseAutoLockTime.getText().trim().equals("")
 						|| !Util.isNumeric(databaseAutoLockTime.getText())) {
-					JOptionPane.showMessageDialog(OptionsDialog.this,
-							Translator.translate("invalidValueForDatabaseAutoLockTime"),
-							Translator.translate("problem"), JOptionPane.ERROR_MESSAGE);
-					databaseAutoLockTime.requestFocusInWindow();
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setTitle(Translator.translate("invalidValueForDatabaseAutoLockTime"));
+					alert.setHeaderText(Translator.translate("problem"));
+					alert.setContentText("Error:"+Alert.AlertType.ERROR);
+
+					alert.showAndWait();
 					return;
 				}
 			}
 
 			if (accountPasswordLength.getText() == null || accountPasswordLength.getText().trim().equals("")
 					|| !Util.isNumeric(accountPasswordLength.getText())) {
-				JOptionPane.showMessageDialog(OptionsDialog.this,
-						Translator.translate("invalidValueForAccountPasswordLength"), Translator.translate("problem"),
-						JOptionPane.ERROR_MESSAGE);
-				databaseAutoLockTime.requestFocusInWindow();
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setTitle(Translator.translate("invalidValueForAccountPasswordLength"));
+				alert.setHeaderText(Translator.translate("problem"));
+				alert.setContentText("Error:"+Alert.AlertType.ERROR);
+
+				alert.showAndWait();
 				return;
 			}
 
@@ -576,7 +587,7 @@ public class OptionsDialog extends EscapeDialog {
 			Preferences.set(Preferences.ApplicationOptions.HTTP_PROXY_PORT, httpProxyPort.getText());
 			Preferences.set(Preferences.ApplicationOptions.HTTP_PROXY_USERNAME, httpProxyUsername.getText());
 			String encodedPassword = new String(
-					Base64.encodeBase64(new String(httpProxyPassword.getPassword()).getBytes()));
+					Base64.encodeBase64(new String(httpProxyPassword.getText()).getBytes()));
 			Preferences.set(Preferences.ApplicationOptions.HTTP_PROXY_PASSWORD, encodedPassword);
 			Preferences.set(Preferences.ApplicationOptions.HTTP_PROXY_ENABLED,
 					String.valueOf(enableProxyCheckbox.isSelected()));
@@ -585,7 +596,7 @@ public class OptionsDialog extends EscapeDialog {
 
 			// Save the new language and set a flag if it has changed
 			String beforeLocale = Preferences.get(Preferences.ApplicationOptions.LOCALE);
-			Locale selectedLocale = Translator.SUPPORTED_LOCALES[localeComboBox.getSelectedIndex()];
+			Locale selectedLocale = Translator.SUPPORTED_LOCALES[locale];
 			String afterLocale = selectedLocale.getLanguage();
 			if (!afterLocale.equals(beforeLocale)) {
 				Preferences.set(Preferences.ApplicationOptions.LOCALE, selectedLocale.getLanguage());
@@ -594,22 +605,26 @@ public class OptionsDialog extends EscapeDialog {
 			}
 
 			Preferences.save();
-			setVisible(false);
-			dispose();
+//			setVisible(false);
+//			dispose();
 			okClicked = true;
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(parentFrame, e.getStackTrace(), Translator.translate("error"),
-					JOptionPane.ERROR_MESSAGE);
+			Alert alert = new Alert(Alert.AlertType.INFORMATION);
+			alert.setTitle(Translator.translate("error"));
+			alert.setHeaderText(Translator.translate("problem"));
+			alert.setContentText("Error:"+Alert.AlertType.ERROR);
+
+			alert.showAndWait();
 		}
 	}
 
 	private void getDBToLoadOnStartup() {
-		JFileChooser fc = new JFileChooser();
-		fc.setDialogTitle(Translator.translate("dbToOpenOnStartup"));
-		int returnVal = fc.showOpenDialog(this);
+		FileChooser fc = new FileChooser();
+		fc.setTitle(Translator.translate("dbToOpenOnStartup"));
+		File returnVal = fc.showSaveDialog(window);
 
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File databaseFile = fc.getSelectedFile();
+		if (returnVal != null) {
+			File databaseFile =  fc.showSaveDialog(window);
 			dbToLoadOnStartup.setText(databaseFile.getAbsoluteFile().toString());
 		}
 	}

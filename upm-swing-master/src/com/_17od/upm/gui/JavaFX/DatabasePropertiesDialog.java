@@ -20,32 +20,17 @@
  */
 package com._17od.upm.gui.JavaFX;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.Border;
-import javax.swing.border.EtchedBorder;
+
 import javafx.*;
+import javafx.scene.Scene;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.Pane;
 
 import com._17od.upm.database.PasswordDatabase;
 import com._17od.upm.transport.Transport;
@@ -59,22 +44,22 @@ public class DatabasePropertiesDialog extends EscapeDialog {
     
     private boolean databaseNeedsSaving = false;
     
-    public DatabasePropertiesDialog(final JFrame frame, ArrayList accountNames, final PasswordDatabase database) {
+    public DatabasePropertiesDialog(final Scene frame, ArrayList accountNames, final PasswordDatabase database) {
         super(frame, Translator.translate("databaseProperties"), true);
         
-        Container container = getContentPane();
+        //Container container = getContentPane();
 
         // Create a pane with an empty border for spacing
-        Border emptyBorder = BorderFactory.createEmptyBorder(2, 5, 5, 5);
-        JPanel emptyBorderPanel = new JPanel();
+        Border emptyBorder = Border();
+        Pane emptyBorderPanel = new Pane();
         emptyBorderPanel.setLayout(new BoxLayout(emptyBorderPanel, BoxLayout.Y_AXIS));
         emptyBorderPanel.setBorder(emptyBorder);
         container.add(emptyBorderPanel);
 
         // Create a pane with an title etched border
-        Border etchedBorder = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+        Border etchedBorder = new Border();
         Border etchedTitleBorder = BorderFactory.createTitledBorder(etchedBorder, ' ' + Translator.translate("remoteLocation") + ' ');
-        JPanel mainPanel = new JPanel(new GridBagLayout());
+        Panel mainPanel = new Pane();
         mainPanel.setBorder(etchedTitleBorder);
         emptyBorderPanel.add(mainPanel);
 
