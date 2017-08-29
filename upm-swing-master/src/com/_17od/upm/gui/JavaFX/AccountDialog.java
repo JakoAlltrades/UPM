@@ -27,6 +27,8 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -199,7 +201,8 @@ public class AccountDialog extends EscapeDialog {
 		});
 
 		Button acctCopyButton = new Button();
-		acctCopyButton.(Util.loadImage("copy-icon.png"));
+		BackgroundImage bi = new BackgroundImage();
+		acctCopyButton.setBackground(new Background().getImages().add());
 		acctCopyButton.setText("Copy");
 		acctCopyButton.setEnabled(true);
 		acctCopyButton.setMargin(new Insets(0, 0, 0, 0));
