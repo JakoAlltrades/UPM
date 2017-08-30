@@ -489,6 +489,13 @@ PasswordField password = new PasswordField();
 				passed =  true;
 			}
 		}
+		else if(!useEscapeCharacters && !useLowerCharacters && !useUpperCharacters && !useNumberCharacters && !useSymbolCharacters)
+		{
+			if ((InclUpperCase(Pass)) && (InclLowerCase(Pass)) && (InclNumber(Pass)) && (InclEscape(Pass))) {
+				securityValue = 1f;
+				passed = true;
+			}
+		}
 		return passed;
 	} // End CheckPassStrong()
 
