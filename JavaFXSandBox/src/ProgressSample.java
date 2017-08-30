@@ -191,6 +191,7 @@ PasswordField password = new PasswordField();
 			}while(!CheckPassStrong(temp));
 			password.setText(temp);
 			System.out.println(password.getText());
+			securityValue = CheckPasswordSecurity(temp);
 			passBar.setProgress(securityValue);
 		} 
        });
@@ -386,74 +387,72 @@ PasswordField password = new PasswordField();
 	   boolean passed = false;
 		if ((useEscapeCharacters && useLowerCharacters && useUpperCharacters && useNumberCharacters) || useSymbolCharacters) {
 			if ((InclUpperCase(Pass)) && (InclLowerCase(Pass)) && (InclNumber(Pass)) && (InclEscape(Pass))) {
-				securityValue = 1f;
 				passed = true;
 			} 
 		} else if (!useEscapeCharacters && useLowerCharacters && useUpperCharacters && useNumberCharacters){
 			if ((InclUpperCase(Pass)) && (InclLowerCase(Pass)) && (InclNumber(Pass))) {
-				securityValue = 1f;
 				passed = true;
 			} 
 		}
 		else if(useEscapeCharacters && !useLowerCharacters && useUpperCharacters && useNumberCharacters){
 			if ((InclUpperCase(Pass)) && (InclNumber(Pass)) && (InclEscape(Pass))) {
-				securityValue = 1f;
+				
 				passed = true;
 			} 
 		}
 		else if(useEscapeCharacters && useLowerCharacters && !useUpperCharacters && useNumberCharacters){
 			if ((InclLowerCase(Pass)) && (InclNumber(Pass)) && (InclEscape(Pass))) {
-				securityValue = 1f;
+				
 				passed = true;
 			} 
 		}
 		else if(useEscapeCharacters && useLowerCharacters && useUpperCharacters && !useNumberCharacters){
 			if ((InclUpperCase(Pass)) && (InclLowerCase(Pass)) && (InclEscape(Pass))) {
-				securityValue = 1f;
+				
 				passed =  true;
 			} 
 		}
 		
 		else if (!useEscapeCharacters && !useLowerCharacters && useUpperCharacters && useNumberCharacters){
 			if ((InclUpperCase(Pass)) && (InclNumber(Pass))) {
-				securityValue = 1f;
+				
 				passed = true;
 			} 
 		}
 		else if(useEscapeCharacters && useLowerCharacters && !useUpperCharacters && !useNumberCharacters){
 			if ((InclLowerCase(Pass)) && (InclEscape(Pass))) {
-				securityValue = 1f;
+				
 				passed =  true;
 			} 
 		}
 		else if (!useEscapeCharacters && useLowerCharacters && !useUpperCharacters && useNumberCharacters){
 			if ((InclLowerCase(Pass)) && (InclNumber(Pass))) {
-				securityValue = 1f;
+				
 				passed = true;
 			} 
 		}
 		else if(useEscapeCharacters && !useLowerCharacters && useUpperCharacters && !useNumberCharacters){
 			if ((InclUpperCase(Pass)) && (InclEscape(Pass))) {
-				securityValue = 1f;
+				
 				passed =  true;
 			} 
 		}
 		else if(useEscapeCharacters && !useLowerCharacters && !useUpperCharacters && useNumberCharacters){
 			if ((InclNumber(Pass)) && (InclEscape(Pass))) {
-				securityValue = 1f;
+				
 				passed =  true;
 			} 
 		}
 		else if(useEscapeCharacters && !useLowerCharacters && useUpperCharacters && !useNumberCharacters){
 			if ((InclUpperCase(Pass)) && (InclEscape(Pass))) {
-				securityValue = 1f;
+				
 				passed =  true;
 			} 
 		}
 		else if(!useEscapeCharacters && useLowerCharacters && useUpperCharacters && !useNumberCharacters)
 		{
 			if ((InclLowerCase(Pass)) && (InclUpperCase(Pass))) {
-				securityValue = 1f;
+				
 				passed =  true;
 			}
 		}
@@ -461,7 +460,7 @@ PasswordField password = new PasswordField();
 		{
 			if(InclEscape(Pass))
 			{
-				securityValue = 1f;
+				
 				passed =  true;
 			}
 		}
@@ -469,7 +468,7 @@ PasswordField password = new PasswordField();
 		{
 			if(InclLowerCase(Pass))
 			{
-				securityValue = 1f;
+				
 				passed =  true;
 			}
 		}
@@ -477,7 +476,7 @@ PasswordField password = new PasswordField();
 		{
 			if(InclUpperCase(Pass))
 			{
-				securityValue = 1f;
+				
 				passed =  true;
 			}
 		}
@@ -485,14 +484,14 @@ PasswordField password = new PasswordField();
 		{
 			if(InclNumber(Pass))
 			{
-				securityValue = 1f;
+				
 				passed =  true;
 			}
 		}
 		else if(!useEscapeCharacters && !useLowerCharacters && !useUpperCharacters && !useNumberCharacters && !useSymbolCharacters)
 		{
 			if ((InclUpperCase(Pass)) && (InclLowerCase(Pass)) && (InclNumber(Pass)) && (InclEscape(Pass))) {
-				securityValue = 1f;
+				
 				passed = true;
 			}
 		}
@@ -630,170 +629,29 @@ PasswordField password = new PasswordField();
    }
    private float CheckPasswordSecurity(String entered) {
 	   float value = 0f;
-	   boolean lowercaseFound = false;
-	   boolean uppercaseFound = false;
-	   boolean numberFound = false;
-	   boolean spcaseFound = false;
-	   boolean lengthCheck = false;
-	   List<Character> lowercase = Arrays.asList(LOWERCASE_CHARS);
-	   List<Character> uppercase = Arrays.asList(UPPERCASE_CHARS);
-	   List<Character> numbers = Arrays.asList(NUMBER_CHARS);
-	   List<Character> spcase = Arrays.asList(PUNCTUATION_CHARS);
+	   int recLength = 6;
+	   if(entered.length() >= 6)
+	   {
+		   value += 1f/3f;
+	   }
+	   if(InclEscape(entered))
+	   {
+		   value += 1f/ recLength;
+	   }
+	   if(InclUpperCase(entered))
+	   {
+		   value += 1f/ recLength;
+	   }
+	   if(InclLowerCase(entered))
+	   {
+		   value += 1f/ recLength;
+	   }
+	   if(InclNumber(entered))
+	   {
+		   value += 1f/ recLength;
+	   }
 	   //this is just a base system which will be used the other settings and page will lead into this check based on include escapeCharsBoolean and the length of the gen password
 	   
-	   for(int j = 0; j < entered.length(); j++)
-	   {
-		   if(useEscapeCharacters) {
-		   if(lowercase.contains(entered.charAt(j)) && !lowercaseFound)
-		   {
-			  if(pLength == 4)
-			  {
-				  value += .20f;
-			  }
-			  else if(pLength == 5)
-			  {
-				  value += 1f/6f;
-			  }
-			  else if(pLength >= 6)
-			  {
-				  value += 1f/7f;
-			  }
-			   lowercaseFound = true;
-		   }
-		   if(uppercase.contains(entered.charAt(j)) && !uppercaseFound)
-		   {
-			   if(pLength == 4)
-				  {
-					  value += .20f;
-				  }
-				  else if(pLength == 5)
-				  {
-					  value += 1f/6f;
-				  }
-				  else if(pLength >= 6)
-				  {
-					  value += 1f/7f;
-				  }
-			   uppercaseFound = true;
-		   }
-		   if(numbers.contains(entered.charAt(j)) && !numberFound)
-		   {
-			   if(pLength == 4)
-				  {
-					  value += .20f;
-				  }
-				  else if(pLength == 5)
-				  {
-					  value += 1f/6f;
-				  }
-				  else if(pLength >= 6)
-				  {
-					  value += 1f/7f;
-				  }
-			   numberFound = true;
-		   }
-		   if(spcase.contains(entered.charAt(j)) && !spcaseFound)
-		   {
-			   if(pLength == 4)
-				  {
-					  value += .20f;
-				  }
-				  else if(pLength == 5)
-				  {
-					  value += 1f/6f;
-				  }
-				  else if(pLength >= 6)
-				  {
-					  value += 1f/7f;
-				  }
-			   spcaseFound = true;
-		   }
-		   if(entered.length() == pLength && !lengthCheck)
-		   {
-			   if(pLength == 4)
-				  {
-					  value += .20f;
-				  }
-				  else if(pLength == 5)
-				  {
-					  value += 1f/6f;
-				  }
-				  else if(pLength >= 6)
-				  {
-					  value += 1f/7f;
-				  }
-			   lengthCheck = true;
-		   	}
-		   }
-		   else 
-		   {
-			   if(lowercase.contains(entered.charAt(j)) && !lowercaseFound)
-			   {
-				  if(pLength == 4)
-				  {
-					  value += .25f;
-				  }
-				  else if(pLength == 5)
-				  {
-					  value += .20f;
-				  }
-				  else if(pLength >= 6)
-				  {
-					  value += 1f/6f;
-				  }
-				   lowercaseFound = true;
-			   }
-			   if(uppercase.contains(entered.charAt(j)) && !uppercaseFound)
-			   {
-				   if(pLength == 4)
-					  {
-						  value += .25f;
-					  }
-				   
-					  else if(pLength == 5)
-					  {
-						  value += .20f;
-					  }
-					  else if(pLength >= 6)
-					  {
-						  value += 1f/6f;
-					  }
-				   uppercaseFound = true;
-			   }
-			   if(numbers.contains(entered.charAt(j)) && !numberFound)
-			   {
-				   if(pLength == 4)
-					  {
-						  value += .25f;
-					  }
-					  else if(pLength == 5)
-					  {
-						  value += .20f;
-					  }
-					  else if(pLength >= 6)
-					  {
-						  value += 1/6f;
-					  }
-				   numberFound = true;
-			   }
-			   if(entered.length() >= pLength && !lengthCheck)
-			   {
-				   if(pLength == 4)
-					  {
-						  value += .25f;
-					  }
-					  else if(pLength == 5)
-					  {
-						  value += .4f;
-					  }
-					  else if(pLength >= 6)
-					  {
-						  value += 1f/6f;
-					  }
-				   lengthCheck = true;
-			   	}
-		   }
-	   }
 	   return value;
    }
 }
