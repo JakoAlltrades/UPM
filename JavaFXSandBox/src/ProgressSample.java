@@ -178,7 +178,7 @@ PasswordField password = new PasswordField();
 		}
     	   
        });
-       
+       //is all good kiddo
        Button generatePassword = new Button("Generate Password");
        generatePassword.setOnAction(new EventHandler(){
 
