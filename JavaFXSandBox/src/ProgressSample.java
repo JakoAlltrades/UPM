@@ -28,6 +28,15 @@ boolean useNumberCharacters = true;
 boolean useUpperCharacters = true;
 boolean useLowerCharacters = true;
 boolean useSymbolCharacters = false;
+private VBox vb;
+
+public VBox getVb() {
+	return vb;
+}
+
+public void setVb(VBox vb) {
+	this.vb = vb;
+}
 
 ProgressSample ps;
 private float securityValue = 0f;
@@ -179,7 +188,7 @@ PasswordField password = new PasswordField();
 			System.out.println(password.getText());
 		} 
        });
-       final VBox vb = new VBox();
+       vb = new VBox();
        HBox pass = new HBox(new Label("Password: "), password);
        HBox buttons = new HBox(genOptions, generatePassword);
        vb.setSpacing(5);

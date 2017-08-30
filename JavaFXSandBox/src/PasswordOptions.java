@@ -8,7 +8,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -94,6 +96,38 @@ public class PasswordOptions {
 		
 		});
 		VBox vb = new VBox();
+		ToggleGroup group = new ToggleGroup();
+		RadioButton radio1 = new RadioButton("Light");
+		radio1.setToggleGroup(group);
+		radio1.setSelected(true);
+		RadioButton radio2 = new RadioButton("Dark");
+		radio2.setToggleGroup(group);
+		radio2.setSelected(false);
+		HBox theme = new HBox(radio1,radio2);
+		theme.setSpacing(5);
+		vb.getChildren().addAll(theme);
+		radio1.setOnAction(new EventHandler() {
+
+			@Override
+			public void handle(Event e) {
+				// TODO Auto-generated method stub
+				if(radio1.isSelected())
+				{
+					vb.setStyle("-fx-background: black "); 
+					//ps.get.setStyle("-fx-font: normal bold 20px 'serif' "); 
+				}
+			}
+		
+		});
+		radio2.setOnAction(new EventHandler() {
+
+			@Override
+			public void handle(Event e) {
+				vb.setStyle("-fx-background: white "); 
+				
+			}
+		
+		});
 		HBox hb = new HBox(label, tf);
 		HBox buttons = new HBox(apply,cancel);
 		buttons.setSpacing(5);
