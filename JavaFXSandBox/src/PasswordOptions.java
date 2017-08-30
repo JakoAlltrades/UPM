@@ -32,7 +32,7 @@ public class PasswordOptions {
 	CheckBox allSymbolBox;
 	Label label;
 	TextField tf;
-	public PasswordOptions(ProgressSample ps, boolean dark)
+	public PasswordOptions(PasswordDemo ps, boolean dark)
 	{
 		Group iAm = new Group();
 		scene = new Scene(iAm, 250, 250);

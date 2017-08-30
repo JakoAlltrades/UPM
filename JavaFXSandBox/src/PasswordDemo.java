@@ -24,7 +24,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ProgressSample extends Application {
+public class PasswordDemo extends Application {
 
 int pLength = 6;
 boolean useEscapeCharacters = false;
@@ -42,7 +42,7 @@ public void setVb(VBox vb) {
 	this.vb = vb;
 }
 
-ProgressSample ps;
+PasswordDemo ps;
 private float securityValue = 0f;
 private static final long serialVersionUID = 1L;
 private static final Character[] ALLOWED_CHARS = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
