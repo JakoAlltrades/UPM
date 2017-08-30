@@ -608,7 +608,7 @@ PasswordField password = new PasswordField();
 			String line;
 			while ((line = bufferedReader.readLine()) != null) {
 				stringBuffer.append(line);
-				stringBuffer.append("\n");
+				//stringBuffer.append("\n");
 			}
 			fileReader.close();
 			System.out.println("Contents of file:");
@@ -616,6 +616,7 @@ PasswordField password = new PasswordField();
 			String string = stringBuffer.toString();
 			 if(string.equals("Dark"))
 			   {
+				 
 				   return true;
 			   }
 			 else
