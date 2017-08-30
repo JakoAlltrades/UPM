@@ -112,6 +112,8 @@ public class PasswordOptions {
 			radio2 = new RadioButton("Dark");
 			radio2.setToggleGroup(group);
 			radio2.setSelected(true);
+			vb.setStyle("-fx-background: black;-fx-fill: #32cd32;  "); 
+			ps.getVb().setStyle("-fx-background: black;-fx-fill: #32cd32;  "); 
 			HBox theme = new HBox(radio1,radio2);
 			theme.setSpacing(5);
 			vb.getChildren().addAll(theme);

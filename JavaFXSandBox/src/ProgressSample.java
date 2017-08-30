@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 
 public class ProgressSample extends Application {
 
-int pLength = 4;
+int pLength = 6;
 boolean useEscapeCharacters = false;
 boolean useNumberCharacters = true;
 boolean useUpperCharacters = true;
