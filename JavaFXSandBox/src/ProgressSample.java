@@ -174,11 +174,14 @@ PasswordField password = new PasswordField();
 			// TODO Auto-generated method stub
 			String temp;
 			do {
-			temp = (GeneratePassword(pLength));
-			}while(CheckPassStrong(temp));
+				temp = (GeneratePassword(pLength));
+			}while(!CheckPassStrong(temp));
+			password.setText(temp);
 			System.out.println(password.getText());
+			passBar.setProgress(securityValue);
 		} 
        });
+       
        final VBox vb = new VBox();
        HBox pass = new HBox(new Label("Password: "), password);
        HBox buttons = new HBox(genOptions, generatePassword);
@@ -434,6 +437,38 @@ PasswordField password = new PasswordField();
 		else if(!useEscapeCharacters && useLowerCharacters && useUpperCharacters && !useNumberCharacters)
 		{
 			if ((InclLowerCase(Pass)) && (InclUpperCase(Pass))) {
+				securityValue = 1f;
+				passed =  true;
+			}
+		}
+		else if(useEscapeCharacters && !useLowerCharacters && !useUpperCharacters && !useNumberCharacters)
+		{
+			if(InclEscape(Pass))
+			{
+				securityValue = 1f;
+				passed =  true;
+			}
+		}
+		else if(!useEscapeCharacters && useLowerCharacters && !useUpperCharacters && !useNumberCharacters)
+		{
+			if(InclLowerCase(Pass))
+			{
+				securityValue = 1f;
+				passed =  true;
+			}
+		}
+		else if(!useEscapeCharacters && !useLowerCharacters && useUpperCharacters && !useNumberCharacters)
+		{
+			if(InclUpperCase(Pass))
+			{
+				securityValue = 1f;
+				passed =  true;
+			}
+		}
+		else if(!useEscapeCharacters && !useLowerCharacters && !useUpperCharacters && useNumberCharacters)
+		{
+			if(InclNumber(Pass))
+			{
 				securityValue = 1f;
 				passed =  true;
 			}
