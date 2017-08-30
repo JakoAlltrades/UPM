@@ -1,5 +1,7 @@
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import javafx.*;
 import javafx.application.Application;
@@ -20,17 +22,12 @@ import javafx.stage.Stage;
 
 public class ProgressSample extends Application {
 
-final Float[] values = new Float[] {-.1f, 0f, 0.6f, 1.0f};
-final Label [] labels = new Label[values.length];
-final ProgressBar[] pbs = new ProgressBar[values.length];
-final ProgressIndicator[] pins = new ProgressIndicator[values.length];
-final HBox hbs [] = new HBox [values.length];
 int pLength = 4;
 boolean useEscapeCharacters = false;
 boolean useNumberCharacters = true;
 boolean useUpperCharacters = true;
 boolean useLowerCharacters = true;
-boolean useSymbolCharacters = true;
+boolean useSymbolCharacters = false;
 
 ProgressSample ps;
 private float securityValue = 0f;
@@ -53,6 +50,38 @@ public boolean getUseEscapeCharacters() {
 
 public void setUseEscapeCharacters(boolean useEscapeCharacters) {
 	this.useEscapeCharacters = useEscapeCharacters;
+}
+
+public boolean getUseNumberCharacters() {
+	return useNumberCharacters;
+}
+
+public void setUseNumberCharacters(boolean useNumberCharacters) {
+	this.useNumberCharacters= useNumberCharacters;
+}
+
+public boolean getUseLowerCharacters() {
+	return useLowerCharacters;
+}
+
+public void setUseLowerCharacters(boolean useLowerCharacters) {
+	this.useLowerCharacters = useLowerCharacters;
+}
+
+public boolean getUseUpperCharacters() {
+	return useUpperCharacters;
+}
+
+public void setUseUpperCharacters(boolean useUpperCharacters) {
+	this.useUpperCharacters= useUpperCharacters;
+}
+
+public boolean getUseSymbolCharacters() {
+	return useSymbolCharacters;
+}
+
+public void setUseSymbolCharacters(boolean useSymbolCharacters) {
+	this.useSymbolCharacters= useSymbolCharacters;
 }
 
 // Extended CharArray list which include also 24 Escape characters for
@@ -109,25 +138,11 @@ PasswordField password = new PasswordField();
    @Override
    public void start(Stage stage) {
        Group root = new Group();
-       Scene scene = new Scene(root, 300, 250);
+       Scene scene = new Scene(root, 300, 100);
        stage.setScene(scene);
        stage.setTitle("Progress Controls");
-
-       for (int i = 0; i < values.length; i++) {
-           final Label label = labels[i] = new Label();
-           label.setText("progress:" + values[i]);
-
-           final ProgressBar pb = pbs[i] = new ProgressBar();
-           pb.setProgress(values[i]);
-
-           final ProgressIndicator pin = pins[i] = new ProgressIndicator();
-           pin.setProgress(values[i]);
-           final HBox hb = hbs[i] = new HBox();
-           hb.setSpacing(5);
-           hb.setAlignment(Pos.CENTER);
-           hb.getChildren().addAll(label, pb, pin);
-       }
        ProgressBar passBar = new ProgressBar();
+       passBar.setProgress(securityValue);
        password.setOnAction(new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent e) {
@@ -160,9 +175,291 @@ PasswordField password = new PasswordField();
        stage.show();
    }
        
+   private String GeneratePassword(int PassLength) {
+		SecureRandom random = new SecureRandom();
+		StringBuffer passwordBuffer = new StringBuffer();
+
+		if (useSymbolCharacters || (useUpperCharacters && useLowerCharacters && useNumberCharacters && useEscapeCharacters)) {
+
+			for (int i = 0; i < PassLength; i++) {
+				passwordBuffer.append(EXTRA_ALLOWED_CHARS[random.nextInt(EXTRA_ALLOWED_CHARS.length)]);
+			}
+		}
+		else if(useUpperCharacters && useLowerCharacters && useNumberCharacters && !useEscapeCharacters) {
+			for (int i = 0; i < PassLength; i++) {
+				passwordBuffer.append(ALLOWED_CHARS[random.nextInt(ALLOWED_CHARS.length)]);
+			}
+		} 
+		else if(useUpperCharacters && useLowerCharacters && !useNumberCharacters && useEscapeCharacters) {
+			for (int i = 0; i < PassLength; i++) {
+				int r = random.nextInt(3);
+				switch(r)
+				{
+					case 0:	passwordBuffer.append(UPPERCASE_CHARS[random.nextInt(UPPERCASE_CHARS.length)]);
+						break;
+					case 1: passwordBuffer.append(LOWERCASE_CHARS[random.nextInt(LOWERCASE_CHARS.length)]);
+						break;
+					case 2: passwordBuffer.append(PUNCTUATION_CHARS[random.nextInt(PUNCTUATION_CHARS.length)]);
+						break;
+				}
+			}
+		}
+		else if(useUpperCharacters && !useLowerCharacters && useNumberCharacters && useEscapeCharacters) {
+			for (int i = 0; i < PassLength; i++) {
+				int r = random.nextInt(3);
+				switch(r)
+				{
+					case 0:	passwordBuffer.append(UPPERCASE_CHARS[random.nextInt(UPPERCASE_CHARS.length)]);
+						break;
+					case 1: passwordBuffer.append(NUMBER_CHARS[random.nextInt(NUMBER_CHARS.length)]);
+						break;
+					case 2: passwordBuffer.append(PUNCTUATION_CHARS[random.nextInt(PUNCTUATION_CHARS.length)]);
+						break;
+				}
+			}
+		}
+		else if(!useUpperCharacters && useLowerCharacters && useNumberCharacters && useEscapeCharacters) {
+			for (int i = 0; i < PassLength; i++) {
+				int r = random.nextInt(3);
+				switch(r)
+				{
+					case 0:	passwordBuffer.append(LOWERCASE_CHARS[random.nextInt(LOWERCASE_CHARS.length)]);
+						break;
+					case 1: passwordBuffer.append(NUMBER_CHARS[random.nextInt(NUMBER_CHARS.length)]);
+						break;
+					case 2: passwordBuffer.append(PUNCTUATION_CHARS[random.nextInt(PUNCTUATION_CHARS.length)]);
+						break;
+				}
+			}
+		}
+		else if(useUpperCharacters && useLowerCharacters && !useNumberCharacters && !useEscapeCharacters)
+		{
+			for(int i = 0; i < PassLength; i++)
+			{
+				if(random.nextBoolean())
+				{
+					passwordBuffer.append(UPPERCASE_CHARS[random.nextInt(UPPERCASE_CHARS.length)]);
+				}
+				else
+				{
+					passwordBuffer.append(LOWERCASE_CHARS[random.nextInt(LOWERCASE_CHARS.length)]);
+				}
+			}
+		}
+		else if(!useUpperCharacters && !useLowerCharacters && useNumberCharacters && useEscapeCharacters)
+		{
+			for(int i = 0; i < PassLength; i++)
+			{
+				if(random.nextBoolean())
+				{
+					passwordBuffer.append(PUNCTUATION_CHARS[random.nextInt(PUNCTUATION_CHARS.length)]);
+				}
+				else
+				{
+					passwordBuffer.append(NUMBER_CHARS[random.nextInt(NUMBER_CHARS.length)]);
+				}
+			}
+		}else if(useUpperCharacters && !useLowerCharacters && !useNumberCharacters && useEscapeCharacters)
+		{
+			for(int i = 0; i < PassLength; i++)
+			{
+				if(random.nextBoolean())
+				{
+					passwordBuffer.append(UPPERCASE_CHARS[random.nextInt(UPPERCASE_CHARS.length)]);
+				}
+				else
+				{
+					passwordBuffer.append(PUNCTUATION_CHARS[random.nextInt(PUNCTUATION_CHARS.length)]);
+				}
+			}
+		}
+		else if(useUpperCharacters && !useLowerCharacters && useNumberCharacters && !useEscapeCharacters)
+		{
+			for(int i = 0; i < PassLength; i++)
+			{
+				if(random.nextBoolean())
+				{
+					passwordBuffer.append(UPPERCASE_CHARS[random.nextInt(UPPERCASE_CHARS.length)]);
+				}
+				else
+				{
+					passwordBuffer.append(NUMBER_CHARS[random.nextInt(NUMBER_CHARS.length)]);
+				}
+			}
+		}
+		else if(!useUpperCharacters && useLowerCharacters && useNumberCharacters && !useEscapeCharacters)
+		{
+			for(int i = 0; i < PassLength; i++)
+			{
+				if(random.nextBoolean())
+				{
+					passwordBuffer.append(LOWERCASE_CHARS[random.nextInt(LOWERCASE_CHARS.length)]);
+				}
+				else
+				{
+					passwordBuffer.append(NUMBER_CHARS[random.nextInt(NUMBER_CHARS.length)]);
+				}
+			}
+		}
+		else if(!useUpperCharacters && useLowerCharacters && !useNumberCharacters && useEscapeCharacters)
+		{
+			for(int i = 0; i < PassLength; i++)
+			{
+				if(random.nextBoolean())
+				{
+					passwordBuffer.append(LOWERCASE_CHARS[random.nextInt(LOWERCASE_CHARS.length)]);
+				}
+				else
+				{
+					passwordBuffer.append(PUNCTUATION_CHARS[random.nextInt(PUNCTUATION_CHARS.length)]);
+				}
+			}
+		}
+		else if(useUpperCharacters && !useLowerCharacters && !useNumberCharacters && !useEscapeCharacters)
+		{
+			passwordBuffer.append(UPPERCASE_CHARS[random.nextInt(UPPERCASE_CHARS.length)]);
+		}
+		else if(!useUpperCharacters && useLowerCharacters && !useNumberCharacters && !useEscapeCharacters)
+		{
+			passwordBuffer.append(LOWERCASE_CHARS[random.nextInt(ALLOWED_CHARS.length)]);
+		}
+		else if(!useUpperCharacters && !useLowerCharacters && useNumberCharacters && !useEscapeCharacters)
+		{
+			passwordBuffer.append(NUMBER_CHARS[random.nextInt(NUMBER_CHARS.length)]);
+		}
+		else if(!useUpperCharacters && !useLowerCharacters && !useNumberCharacters && useEscapeCharacters)
+		{
+			passwordBuffer.append(PUNCTUATION_CHARS[random.nextInt(PUNCTUATION_CHARS.length)]);
+		}
+		else
+		{
+			System.out.println("ERROR: There are no allowed characters will generate one with all");
+			for (int i = 0; i < PassLength; i++) {
+				passwordBuffer.append(EXTRA_ALLOWED_CHARS[random.nextInt(EXTRA_ALLOWED_CHARS.length)]);
+			}
+		}
+		return passwordBuffer.toString();
+	} // End GeneratePassword()
+   
    public static void main(String[] args) {
        launch(args);
    }
+   
+   private static boolean CheckPassStrong(String Pass, boolean InclEscChars) {
+		if (InclEscChars) {
+			if ((InclUpperCase(Pass)) && (InclLowerCase(Pass)) && (InclNumber(Pass)) && (InclEscape(Pass))) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			if ((InclUpperCase(Pass)) && (InclLowerCase(Pass)) && (InclNumber(Pass))) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	} // End CheckPassStrong()
+
+	/**
+	 * This method returns true if the generated password contains at least one
+	 * Upper Case character. If not, then the method returns false.
+	 *
+	 * @param GeneratedPass
+	 * @return true or false, depending on existence of one upper case letter.
+	 */
+	private static boolean InclUpperCase(String GeneratedPass) {
+		char[] PassWordArray = GeneratedPass.toCharArray();
+		boolean find = false;
+		outerloop: for (int i = 0; i < PassWordArray.length; i++) {
+			for (int j = 0; j < UPPERCASE_CHARS.length; j++) {
+				if (PassWordArray[i] == UPPERCASE_CHARS[j]) {
+					find = true;
+					break outerloop;
+				}
+			}
+		}
+		if (find) {
+			return true;
+		} else {
+			return false;
+		}
+	} // End InclUpperCase()
+
+	/**
+	 * This method returns true if the generated password contains at least one
+	 * Lower Case character. If not, then the method returns false.
+	 *
+	 * @param GeneratedPass
+	 * @return true or false, depending on existence of one lower case letter.
+	 */
+	private static boolean InclLowerCase(String GeneratedPass) {
+		char[] PassWordArray = GeneratedPass.toCharArray();
+		boolean find = false;
+		outerloop: for (int i = 0; i < PassWordArray.length; i++) {
+			for (int j = 0; j < LOWERCASE_CHARS.length; j++) {
+				if (PassWordArray[i] == LOWERCASE_CHARS[j]) {
+					find = true;
+					break outerloop;
+				}
+			}
+		}
+		if (find) {
+			return true;
+		} else {
+			return false;
+		}
+	} // End InclLowerCase()
+
+	/**
+	 * This method returns true if the generated password contains at least one
+	 * Number. If not, then the method returns false.
+	 *
+	 * @param GeneratedPass
+	 * @return true or false, depending on existence of one number.
+	 */
+	private static boolean InclNumber(String GeneratedPass) {
+		char[] PassWordArray = GeneratedPass.toCharArray();
+		boolean find = false;
+		outerloop: for (int i = 0; i < PassWordArray.length; i++) {
+			for (int j = 0; j < NUMBER_CHARS.length; j++) {
+				if (PassWordArray[i] == NUMBER_CHARS[j]) {
+					find = true;
+					break outerloop;
+				}
+			}
+		}
+		if (find) {
+			return true;
+		} else {
+			return false;
+		}
+	} // End InclNumber()
+
+	/**
+	 * This method returns true if the generated password contains at least one
+	 * Escape character. If not, then the method returns false.
+	 *
+	 * @param GeneratedPass
+	 * @return true or false, depending on existence of one escape character.
+	 */
+	private static boolean InclEscape(String GeneratedPass) {
+		char[] PassWordArray = GeneratedPass.toCharArray();
+		boolean find = false;
+		outerloop: for (int i = 0; i < PassWordArray.length; i++) {
+			for (int j = 0; j < PUNCTUATION_CHARS.length; j++) {
+				if (PassWordArray[i] == PUNCTUATION_CHARS[j]) {
+					find = true;
+					break outerloop;
+				}
+			}
+		}
+		if (find) {
+			return true;
+		} else {
+			return false;
+		}
+	} // End InclEscape()
    
    private float CheckPasswordSecurity(String entered) {
 	   float value = 0f;
