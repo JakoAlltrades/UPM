@@ -113,8 +113,8 @@ public class PasswordOptions {
 				// TODO Auto-generated method stub
 				if(radio1.isSelected())
 				{
-					vb.setStyle("-fx-background: -fx-background: #F4F4F4  "); 
-					ps.getVb().setStyle("-fx-background: -fx-background: #F4F4F4  "); 
+					vb.setStyle("-fx-background: #F4F4F4; -fx-fill: #323232;  "); 
+					ps.getVb().setStyle("-fx-background: #F4F4F4;  -fx-fill: #323232;"); 
 					//ps.get.setStyle("-fx-font: normal bold 20px 'serif' "); 
 				}
 			}
@@ -126,8 +126,8 @@ public class PasswordOptions {
 			public void handle(Event e) {
 				if(radio2.isSelected())
 				{
-					vb.setStyle("-fx-background: black;-fx-text-fill: green; "); 
-					ps.getVb().setStyle("-fx-background: black;-fx-text-fill: green;  "); 
+					vb.setStyle("-fx-background: black;-fx-fill: #32cd32;  "); 
+					ps.getVb().setStyle("-fx-background: black;-fx-fill: #32cd32;  "); 
 				}
 			}
 		
