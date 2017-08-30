@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
@@ -169,7 +173,7 @@ PasswordField password = new PasswordField();
 		@Override
 		public void handle(Event e) {
 			// TODO Auto-generated method stub
-			PasswordOptions po = new PasswordOptions(ps);
+			PasswordOptions po = new PasswordOptions(ps, IsDark());
 			//stage.close();
 		}
     	   
@@ -189,6 +193,10 @@ PasswordField password = new PasswordField();
 		} 
        });
        vb = new VBox();
+       if(IsDark())
+       {
+    	  vb.setStyle("-fx-background: black;"); 
+       }
        HBox pass = new HBox(new Label("Password: "), password);
        HBox buttons = new HBox(genOptions, generatePassword);
        vb.setSpacing(5);
@@ -549,7 +557,35 @@ PasswordField password = new PasswordField();
 			return false;
 		}
 	} // End InclEscape()
-   
+   private boolean IsDark(){
+	   try {
+		   String path = System.getProperty("user.dir") + "/styleFile.txt"; 
+		   File file = new File(path);
+			FileReader fileReader = new FileReader(file);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			StringBuffer stringBuffer = new StringBuffer();
+			String line;
+			while ((line = bufferedReader.readLine()) != null) {
+				stringBuffer.append(line);
+				stringBuffer.append("\n");
+			}
+			fileReader.close();
+			System.out.println("Contents of file:");
+			System.out.println(stringBuffer.toString());
+			String string = stringBuffer.toString();
+			 if(string.equals("Dark"))
+			   {
+				   return true;
+			   }
+			 else
+			 {
+				 return false;    
+			 }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	return false;
+   }
    private float CheckPasswordSecurity(String entered) {
 	   float value = 0f;
 	   boolean lowercaseFound = false;

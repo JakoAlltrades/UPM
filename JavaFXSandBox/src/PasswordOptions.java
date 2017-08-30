@@ -1,3 +1,8 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import javax.swing.event.DocumentEvent.EventType;
 
 import javafx.event.ActionEvent;
@@ -27,7 +32,7 @@ public class PasswordOptions {
 	CheckBox allSymbolBox;
 	Label label;
 	TextField tf;
-	public PasswordOptions(ProgressSample ps)
+	public PasswordOptions(ProgressSample ps, boolean dark)
 	{
 		Group iAm = new Group();
 		scene = new Scene(iAm, 250, 250);
@@ -97,15 +102,32 @@ public class PasswordOptions {
 		});
 		VBox vb = new VBox();
 		ToggleGroup group = new ToggleGroup();
-		RadioButton radio1 = new RadioButton("Light");
-		radio1.setToggleGroup(group);
-		radio1.setSelected(true);
-		RadioButton radio2 = new RadioButton("Dark");
-		radio2.setToggleGroup(group);
-		radio2.setSelected(false);
-		HBox theme = new HBox(radio1,radio2);
-		theme.setSpacing(5);
-		vb.getChildren().addAll(theme);
+		RadioButton radio1;
+		RadioButton radio2;
+		if(dark == true)
+		{
+			radio1 = new RadioButton("Light");
+			radio1.setToggleGroup(group);
+			radio1.setSelected(false);
+			radio2 = new RadioButton("Dark");
+			radio2.setToggleGroup(group);
+			radio2.setSelected(true);
+			HBox theme = new HBox(radio1,radio2);
+			theme.setSpacing(5);
+			vb.getChildren().addAll(theme);
+		}
+		else
+		{
+		    radio1 = new RadioButton("Light");
+			radio1.setToggleGroup(group);
+			radio1.setSelected(true);
+			radio2 = new RadioButton("Dark");
+			radio2.setToggleGroup(group);
+			radio2.setSelected(false);
+			HBox theme = new HBox(radio1,radio2);
+			theme.setSpacing(5);
+			vb.getChildren().addAll(theme);
+		}
 		radio1.setOnAction(new EventHandler() {
 
 			@Override
@@ -116,6 +138,38 @@ public class PasswordOptions {
 					vb.setStyle("-fx-background: -fx-background: #F4F4F4  "); 
 					ps.getVb().setStyle("-fx-background: -fx-background: #F4F4F4  "); 
 					//ps.get.setStyle("-fx-font: normal bold 20px 'serif' "); 
+					 String path = System.getProperty("user.dir") + "/styleFile.txt"; 
+					 File file = new File(path);
+					 BufferedWriter bw = null;
+						FileWriter fw = null;
+
+						try {
+
+							fw = new FileWriter(file);
+							bw = new BufferedWriter(fw);
+							bw.write("Light");
+							System.out.println("Done");
+
+						} catch (IOException e1) {
+
+							e1.printStackTrace();
+
+						} finally {
+
+							try {
+
+								if (bw != null)
+									bw.close();
+
+								if (fw != null)
+									fw.close();
+
+							} catch (IOException ex) {
+
+								ex.printStackTrace();
+
+							}
+						}
 				}
 			}
 		
@@ -128,6 +182,38 @@ public class PasswordOptions {
 				{
 					vb.setStyle("-fx-background: black;-fx-text-fill: green; "); 
 					ps.getVb().setStyle("-fx-background: black;-fx-text-fill: green;  "); 
+					 String path = System.getProperty("user.dir") + "/styleFile.txt"; 
+					 File file = new File(path);
+					 BufferedWriter bw = null;
+						FileWriter fw = null;
+
+						try {
+
+							fw = new FileWriter(file);
+							bw = new BufferedWriter(fw);
+							bw.write("Dark");
+							System.out.println("Done");
+
+						} catch (IOException e1) {
+
+							e1.printStackTrace();
+
+						} finally {
+
+							try {
+
+								if (bw != null)
+									bw.close();
+
+								if (fw != null)
+									fw.close();
+
+							} catch (IOException ex) {
+
+								ex.printStackTrace();
+
+							}
+						}
 				}
 			}
 		
